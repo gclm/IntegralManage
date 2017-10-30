@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>信工院积分管理系统-登录</title>
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/normalize.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+<!--必要样式-->
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/component2.css}" />
+<!--[if IE]-->
+<script type="text/javascript" th:src="@{/static/js/html5.js}"></script>
+<!--[endif]-->
+<script type="text/javascript">
+/* th:if="${not #lists.isEmpty(prod.comments)}">view</a>
+<c:if test="${!empty logoutMessage}">
+	alert('${login}');
+</c:if>
+ */
+</script>
+</head>
+<body>
+	<div class="container demo-1">
+		<div class="content">
+			<div id="large-header" class="large-header">
+				<canvas id="demo-canvas"></canvas>
+				<div class="logo_box">
+					<form th:action="@{/base/login.do}"  th:object="${ImsUser}"  th:method="post">
+						<div class="titile"><span>登&nbsp;&nbsp;录</span></div>
+						<div class="name"><input type="text"     name="student_id"    placeholder="请输入学号" /><i class="user"></i></div>
+				        <div class="pass"><input type="password" name="password"   placeholder="请输入密码"/><i class="pwd"></i></div>
+			            <div class="msg"><sapn th:text="${loginMessage}">asdsa</sapn></div>
+						<div class="submit"><input type="submit" value="Sign  In"/> <span><a class="forget" href="javascript:void(0)">忘记密码？</a></span></div>
+					</form>		
+				</div>
+			</div>		
+		</div>		
+	</div>
+		
+	<!-- /container -->
+	<script type="text/javascript" th:src="@{/static/js/TweenLite.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/EasePack.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/rAF.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/demo-1.js}"></script>
+	</body>
+</html>
