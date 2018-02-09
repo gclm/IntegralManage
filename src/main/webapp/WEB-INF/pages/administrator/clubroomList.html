@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">  
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>学生管理</title>
+	   <link rel="stylesheet" type="text/css"  th:href="@{/static/css/normalize.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/fileinput.min.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/stuManger.css}" />
+		<style>
+		   .container-width {
+				max-width: 400px;
+			}
+			
+			.form-group {
+				margin: 10px auto;
+			}
+			
+			.form {
+				margin-top: 40px;
+			}
+			
+			.label {
+				color: #777;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+	<body>
+	<div class="r-top">
+		<div class="titile">
+			<div class="img">
+				<i class="glyphicon glyphicon-education"></i>
+			</div>
+			<div class="detail-info">
+				<span class="p1">部室管理</span><br /> <span class="p2"><i
+					class="glyphicon glyphicon-grain"></i>&nbsp;进行部室的添加或者修改</span>
+			</div>
+		</div>
+	</div>
+	<div class="r-main">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+			    	<tr>
+			    		<th><input type="checkbox" id="all"/></th>
+			    		<td>ID</td>
+			    		<td>部室</td>
+			    		<td>操作</td>
+			    	</tr>
+			    </thead> 
+			   <tbody>
+			          <tr th:each="prod : ${pageInfo}">
+			    	   <td class="first"><input type="checkbox"/></td>
+			    	   <td th:text="${prod.clubroomId}"></td>
+					   <td th:text="${prod.clubroomName}"></td>
+					   <td>
+					       <a href="javascript:void(0)" class="edit"><img  th:src="@{/static/img/edit.png}"  alt="编辑" width="20px" height="20px" /></a>
+			    		   <span class="mid">|</span>
+			    		   <a href="javascript:void(0)" class="delete"><img th:src="@{/static/img/delete.png}" width="20px" height="20px"/></a>
+			    	   </td>
+					</tr>
+			    </tbody>
+			</table>
+		</div>
+		<div class="mybtn">
+			<input type="button" value="添加部室" class="btn btn-default bcolor"
+				data-toggle="modal" data-target="#addModal"/> <span></span>
+			<input type="button" name="cancel" id="cancel" value="删除部室"
+				class="btn btn-default bcolor"/>
+       </div>
+	</div>
+			
+	<!-- 添加部室信息的模态框 -->
+	<div class="modal fade in" id="addModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">部室信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal " role="form"  enctype="multipart/form-data">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">部室</label>
+								<div class="col-sm-9">
+									<input type="text"  class="form-control"  id="clubroomName_add_input" name="clubroomName" placeholder="请输入部室名称">
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-default btn-primary">重置</button>
+					<button type="button"  id="clubroom_save_btn" class="btn btn-default btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+    <!-- 修改部室信息的模态框 -->
+	<div class="modal fade in" id="updateModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">部室信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal " role="form" >
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">部室</label>
+								<div class="col-sm-9">
+									<input type="hidden"  class="form-control"  id="clubroomId_update_input"  name="clubroomId">
+									<input type="text"  class="form-control"  id="clubroomName_update_input"  name="clubroomName" placeholder="请输入部室名称">
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-default btn-primary">重置</button>
+					<button type="button"  id="clubroom_update_btn" class="btn btn-default btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/js/jquery.min.js}" type="text/javascript"    charset="utf-8"></script>
+	<script th:src="@{/static/js/fileinput.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/static/js/bootstrap.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#all').click(function() {
+				if (this.checked) {
+					$('.first :checkbox').prop("checked", true)
+				} else {
+					$('.first :checkbox').prop("checked", false)
+				}
+			});
+	         
+	        //弹出模态框
+			$('#addModal').modal({
+				backdrop : 'static',
+				show:false
+			}); 
+			$('#updateModal').modal({
+				backdrop : 'static',
+				show:false
+			}); 
+		});
+	
+		//修改用户回显
+		$('.edit').click(function() {
+			var id = $(this).parent().parent().find("td").eq(1).text();
+			var name = $(this).parent().parent().find("td").eq(2).text();
+			
+		    $("#clubroomId_update_input").val(id);
+			$("#clubroomName_update_input").val(name);
+	        
+	        $("#updateModal").modal('show'); 
+	        
+		});
+	    	
+		//单个删除
+	     $(document).on("click",".delete",function(){
+			//1、弹出是否确认删除对话框
+			 var Name = $(this).parents("tr").find("td:eq(2)").text();
+			 var Id = $(this).parents("tr").find("td:eq(1)").text();
+			 if(confirm("确认删除【"+Name+"】吗？")){
+				$.ajax({
+					url:"deleteClubroom.do",
+					type:'post',
+					data:{ids:Id},
+					contentType:'application/x-www-form-urlencoded', //contentType很重要
+					success:function(){
+						alert("删除成功");
+						window.location.reload();
+					}
+				});
+			}  
+		});
+			
+		//点击全部删除，就批量删除
+		$(document).on("click","#cancel",function(){
+			var Names = "";
+			var del_idstr = "";
+			$.each($(".first :checked"),function(){
+				//this
+				Names += $(this).parents("tr").find("td:eq(2)").text()+",";
+				//组装id字符串
+				del_idstr += $(this).parents("tr").find("td:eq(1)").text()+"-";
+			});
+			//去除ClubroomNames多余的,
+			Names = Names.substring(0, Names.length-1);
+			//去除删除的id多余的-
+			del_idstr = del_idstr.substring(0, del_idstr.length-1);
+			if(confirm("确认删除【"+Names+"】吗？")){
+				//发送ajax请求删除
+				$.ajax({
+					url:'deleteClubroom.do',
+					type:"post",
+					data:{ids:del_idstr},
+					success:function(){
+						alert("删除成功！！！");
+						window.location.reload();
+					}
+				});
+			}
+		});
+		
+		
+		
+		//校验部室是否重复
+		$("#clubroomName_add_input").change(function() {
+			//发送ajax请求校验部室名是否可用
+			var clubroomName = this.value;
+			$.ajax({
+				url : "checkClubroomName.do",
+				data : "clubroomName=" + clubroomName,
+				type : "POST",
+				success : function(result) {
+					if (result.code == 200) {
+						show_validate_msg("#clubroomName_add_input", "success", "可以创建该部室");
+						$("#clubroom_save_btn").attr("ajax-va", "success");
+					} else {
+						show_validate_msg("#clubroomName_add_input", "error", result.extend.clubroomNameMessage);
+						$("#clubroom_save_btn").attr("ajax-va", "error");                     
+					}
+	
+				}
+			});
+		});
+		
+		
+		//保存部室
+		$("#clubroom_save_btn").click(function() {
+		 
+		    //1、判断之前的ajax部室校验是否成功。如果成功。
+			if ($(this).attr("ajax-va") == "error") {
+				 return false;
+			}
+		    
+			//发送ajax请求保存部室
+			$.ajax({
+				url : "addClubroom.do",
+				type : "POST",
+				data : $("#addModal form").serialize(),
+				success : function(result) {
+           		    if (result.code == 200) {
+           		       alert("添加部室成功");
+					   //部室保存成功；关闭模态框
+	                   window.location.reload();
+					} 
+				}
+			});
+		});
+		
+		//显示校验结果的提示信息
+		function show_validate_msg(ele, status, msg) {
+			//清除当前元素的校验状态
+			$(ele).parent().removeClass("has-success has-error");
+			$(ele).next("span").text("");
+			
+			if ("success" == status) {
+				$(ele).parent().addClass("has-success");
+				$(ele).next("span").text(msg);
+			} else if ("error" == status) {
+				$(ele).parent().addClass("has-error");
+				$(ele).next("span").text(msg);
+			}
+		}
+	     
+	     
+	    //点击更新，更新部室信息
+		$("#clubroom_update_btn").click(function(){
+			//验证部室是否合法
+			var clubroomName = $("#clubroomName_update_input").val();
+			
+			//发送ajax请求校验部室名是否可用
+			$.ajax({
+				url : "checkClubroomName.do",
+				data : "clubroomName=" + clubroomName,
+				type : "POST",
+				success : function(result) {
+					if (result.code == 200) {
+						show_validate_msg("#clubroomName_update_input", "success", "可以创建该部室");
+						$("#clubroom_update_btn").attr("ajax-va", "success");
+					} else {
+						show_validate_msg("#clubroomName_update_input", "error", result.extend.clubroomNameMessage);
+						$("#clubroom_update_btn").attr("ajax-va", "error");
+					}
+	
+				}
+			}); 
+			
+		 	//发送ajax请求保存更新的数据
+			$.ajax({
+				url : "updateClubroom.do",
+				type : "PUT",
+				data : $("#updateModal form").serialize(),
+				success : function(result) {
+           		    if (result.code == 200) {
+           		       alert("修改账号成功");
+					   //部室保存成功；关闭模态框
+	                   window.location.reload();
+					} 
+				}
+			});
+		});
+		 
+		
+	</script>
+	</body>
+</html>

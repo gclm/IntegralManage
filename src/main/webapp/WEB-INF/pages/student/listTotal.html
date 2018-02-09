@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+      <head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>个人情况</title>
+		<link rel="stylesheet" type="text/css"
+			th:href="@{/static/css/bootstrap.min.css}" />
+			<link rel="stylesheet" type="text/css"
+			th:href="@{/static/css/class.css}" />
+		
+	</head>
+	<!--班级情况界面-->
+	<body>
+		<div class="header">
+			<p>班级积分详情</p>
+			<p style="font-size: 1em;" th:text="${intSemester}"></p>
+		</div>
+		<div class="center">
+			<table class="table table-responsive">
+				<thead style="color: cornflowerblue;">
+				<tr>
+					<td>姓名</td>
+					<td>总分</td>
+					<td>班级排名</td>
+				
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="prod ,iterStat: ${pageInfo}">
+			    	<td th:text="${prod.studentName}"></td>
+			    	<td th:text="${prod.allscore}"></td>
+			    	<td th:text="${iterStat.index+1}"></td>
+			    </tr>
+			</tbody>
+			</table>
+			
+		</div>
+	</body>
+</html>

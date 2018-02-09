@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.future.ims.mapper.ImsIntegralMapper">
+
+	<resultMap id="BaseResultMap" type="org.future.ims.pojo.ImsIntegral">
+		<id column="integral_id" property="integralId" jdbcType="INTEGER" />
+		<result column="student_name" property="studentName" jdbcType="VARCHAR" />
+		<result column="student_id" property="studentId" jdbcType="VARCHAR" />
+		<result column="score" property="score" jdbcType="REAL" />
+		<result column="reason" property="reason" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="VARCHAR" />
+		<result column="clubroom" property="clubroom" jdbcType="VARCHAR" />
+		<result column="int_semester" property="intSemester" jdbcType="VARCHAR" />
+		<result column="grades" property="grades" jdbcType="VARCHAR" />
+		<result column="creatime" property="creatime" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 多条件查询 -->
+	<select id="selectByVo" parameterType="org.future.ims.pojo.QueryVoIntegral"
+		resultMap="BaseResultMap">
+		select * from ims_integral
+		<where>
+			<if test="voStuIdAndName != ''">
+				AND (student_id LIKE CONCAT('%',#{voStuIdAndName},'%') or
+				student_name LIKE CONCAT('%',#{voStuIdAndName},'%') )
+			</if>
+			<if test="voClass != ''">
+				and grades = #{voClass}
+			</if>
+			<if test="voClub != ''">
+				and clubroom = #{voClub}
+			</if>
+			<if test="voSemester != ''">
+				and int_semester =#{voSemester}
+			</if>
+		</where>
+	</select>
+
+	<!-- 积分查重 -->
+	<select id="queryRepetition" resultMap="BaseResultMap">
+		select * from ims_integral where student_name = #{0} and student_id = #{1} and grades = #{2}
+			and score = #{3} and reason = #{4} and time = #{5} and clubroom = #{6} and int_semester = #{7}
+	</select>
+	
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+
+	<sql id="Base_Column_List">
+		integral_id, student_name, student_id, score, reason, time, clubroom,
+		int_semester,
+		grades, creatime, update_time, name
+	</sql>
+
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="org.future.ims.pojo.ImsIntegralExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from ims_integral
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from ims_integral
+		where integral_id = #{integralId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ims_integral
+		where integral_id = #{integralId,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteByExample" parameterType="org.future.ims.pojo.ImsIntegralExample">
+		delete from ims_integral
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+
+	<insert id="insert" parameterType="org.future.ims.pojo.ImsIntegral">
+		insert into ims_integral (student_name, student_id,
+		score, reason, time,
+		clubroom, int_semester, grades,
+		creatime, update_time, name
+		)
+		values (#{studentName,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR},
+		#{score,jdbcType=REAL}, #{reason,jdbcType=VARCHAR},
+		#{time,jdbcType=VARCHAR},
+		#{clubroom,jdbcType=VARCHAR}, #{intSemester,jdbcType=VARCHAR}, #{grades,jdbcType=VARCHAR},
+		#{creatime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertSelective" parameterType="org.future.ims.pojo.ImsIntegral">
+		insert into ims_integral
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="integralId != null">
+				integral_id,
+			</if>
+			<if test="studentName != null">
+				student_name,
+			</if>
+			<if test="studentId != null">
+				student_id,
+			</if>
+			<if test="score != null">
+				score,
+			</if>
+			<if test="reason != null">
+				reason,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+			<if test="clubroom != null">
+				clubroom,
+			</if>
+			<if test="intSemester != null">
+				int_semester,
+			</if>
+			<if test="grades != null">
+				grades,
+			</if>
+			<if test="creatime != null">
+				creatime,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="integralId != null">
+				#{integralId,jdbcType=INTEGER},
+			</if>
+			<if test="studentName != null">
+				#{studentName,jdbcType=VARCHAR},
+			</if>
+			<if test="studentId != null">
+				#{studentId,jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				#{score,jdbcType=REAL},
+			</if>
+			<if test="reason != null">
+				#{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=VARCHAR},
+			</if>
+			<if test="clubroom != null">
+				#{clubroom,jdbcType=VARCHAR},
+			</if>
+			<if test="intSemester != null">
+				#{intSemester,jdbcType=VARCHAR},
+			</if>
+			<if test="grades != null">
+				#{grades,jdbcType=VARCHAR},
+			</if>
+			<if test="creatime != null">
+				#{creatime,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="countByExample" parameterType="org.future.ims.pojo.ImsIntegralExample"
+		resultType="java.lang.Integer">
+		select count(*) from ims_integral
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<update id="updateByExampleSelective" parameterType="map">
+		update ims_integral
+		<set>
+			<if test="record.integralId != null">
+				integral_id = #{record.integralId,jdbcType=INTEGER},
+			</if>
+			<if test="record.studentName != null">
+				student_name = #{record.studentName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.studentId != null">
+				student_id = #{record.studentId,jdbcType=VARCHAR},
+			</if>
+			<if test="record.score != null">
+				score = #{record.score,jdbcType=REAL},
+			</if>
+			<if test="record.reason != null">
+				reason = #{record.reason,jdbcType=VARCHAR},
+			</if>
+			<if test="record.time != null">
+				time = #{record.time,jdbcType=VARCHAR},
+			</if>
+			<if test="record.clubroom != null">
+				clubroom = #{record.clubroom,jdbcType=VARCHAR},
+			</if>
+			<if test="record.intSemester != null">
+				int_semester = #{record.intSemester,jdbcType=VARCHAR},
+			</if>
+			<if test="record.grades != null">
+				grades = #{record.grades,jdbcType=VARCHAR},
+			</if>
+			<if test="record.creatime != null">
+				creatime = #{record.creatime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.updateTime != null">
+				update_time = #{record.updateTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.name != null">
+				name = #{record.name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<update id="updateByExample" parameterType="map">
+		update ims_integral
+		set integral_id = #{record.integralId,jdbcType=INTEGER},
+		student_name = #{record.studentName,jdbcType=VARCHAR},
+		student_id = #{record.studentId,jdbcType=VARCHAR},
+		score = #{record.score,jdbcType=REAL},
+		reason = #{record.reason,jdbcType=VARCHAR},
+		time = #{record.time,jdbcType=VARCHAR},
+		clubroom = #{record.clubroom,jdbcType=VARCHAR},
+		int_semester = #{record.intSemester,jdbcType=VARCHAR},
+		grades = #{record.grades,jdbcType=VARCHAR},
+		creatime = #{record.creatime,jdbcType=VARCHAR},
+		update_time = #{record.updateTime,jdbcType=VARCHAR},
+		name = #{record.name,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="org.future.ims.pojo.ImsIntegral">
+		update ims_integral
+		<set>
+			<if test="studentName != null">
+				student_name = #{studentName,jdbcType=VARCHAR},
+			</if>
+			<if test="studentId != null">
+				student_id = #{studentId,jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				score = #{score,jdbcType=REAL},
+			</if>
+			<if test="reason != null">
+				reason = #{reason,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=VARCHAR},
+			</if>
+			<if test="clubroom != null">
+				clubroom = #{clubroom,jdbcType=VARCHAR},
+			</if>
+			<if test="intSemester != null">
+				int_semester = #{intSemester,jdbcType=VARCHAR},
+			</if>
+			<if test="grades != null">
+				grades = #{grades,jdbcType=VARCHAR},
+			</if>
+			<if test="creatime != null">
+				creatime = #{creatime,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where integral_id = #{integralId,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="org.future.ims.pojo.ImsIntegral">
+		update ims_integral
+		set student_name = #{studentName,jdbcType=VARCHAR},
+		student_id = #{studentId,jdbcType=VARCHAR},
+		score = #{score,jdbcType=REAL},
+		reason = #{reason,jdbcType=VARCHAR},
+		time = #{time,jdbcType=VARCHAR},
+		clubroom = #{clubroom,jdbcType=VARCHAR},
+		int_semester = #{intSemester,jdbcType=VARCHAR},
+		grades = #{grades,jdbcType=VARCHAR},
+		creatime = #{creatime,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=VARCHAR},
+		name = #{name,jdbcType=VARCHAR}
+		where integral_id = #{integralId,jdbcType=INTEGER}
+	</update>
+</mapper>

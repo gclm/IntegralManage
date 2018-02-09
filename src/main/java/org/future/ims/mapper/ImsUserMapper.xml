@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.future.ims.mapper.ImsUserMapper" >
-  <!-- 自定义 -->
-  <select id="selectByStudentId" parameterType="string" resultType="ImsUser">
-      select * from  ims_user  where  student_id=#{studentId}
-  </select>
-  
   
   <resultMap id="BaseResultMap" type="org.future.ims.pojo.ImsUser" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
@@ -14,7 +9,25 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="clubroom" property="clubroom" jdbcType="VARCHAR" />
     <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
   </resultMap>
+  
+  <select id="selectByStudentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	 	select * from ims_user where  student_id=#{studentId}
+  </select>
+  
+  <!-- 根据学号模糊查询 -->
+  <select id="selectUsersByStudentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	 	select * from  ims_user where student_id  LIKE CONCAT('%',#{studentId},'%')
+  </select>
+  
+  <!--  ImsUser selectByEmail(String email); -->
+  <select id="selectByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+	 	select * from ims_user where email=#{email}
+  </select>
+  
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -74,7 +87,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_id, name, student_id, password, clubroom, role
+    user_id, name, student_id, password, clubroom, role, email, pic
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="org.future.ims.pojo.ImsUserExample" >
     select
@@ -108,11 +121,11 @@
   </delete>
   <insert id="insert" parameterType="org.future.ims.pojo.ImsUser" >
     insert into ims_user (user_id, name, student_id, 
-      password, clubroom, role
-      )
+      password, clubroom, role, 
+      email, pic)
     values (#{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{studentId,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{clubroom,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}
-      )
+      #{password,jdbcType=VARCHAR}, #{clubroom,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.future.ims.pojo.ImsUser" >
     insert into ims_user
@@ -135,6 +148,12 @@
       <if test="role != null" >
         role,
       </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -154,6 +173,12 @@
       </if>
       <if test="role != null" >
         #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -184,6 +209,12 @@
       <if test="record.role != null" >
         role = #{record.role,jdbcType=VARCHAR},
       </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pic != null" >
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -196,7 +227,9 @@
       student_id = #{record.studentId,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       clubroom = #{record.clubroom,jdbcType=VARCHAR},
-      role = #{record.role,jdbcType=VARCHAR}
+      role = #{record.role,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -219,6 +252,12 @@
       <if test="role != null" >
         role = #{role,jdbcType=VARCHAR},
       </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -228,7 +267,9 @@
       student_id = #{studentId,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       clubroom = #{clubroom,jdbcType=VARCHAR},
-      role = #{role,jdbcType=VARCHAR}
+      role = #{role,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

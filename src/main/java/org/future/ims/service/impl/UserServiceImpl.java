@@ -22,44 +22,15 @@ public class UserServiceImpl implements UserService{
 		return userMapper.selectByStudentId(studentId);  
 	}
 
-	public List<ImsUser> addUserList(ImsUser user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-	//批量添加用户
-	public int updateUserById(ImsUser user) {
-		user.setRole("admin");
-		return  userMapper.updateByPrimaryKey(user);
-	}
-
-	public int addUser(ImsUser user) {
-		
-		return userMapper.insert(user);
-	}
-
 	/* (non-Javadoc)
 	 * @see org.future.ims.service.UserService#getUserAll()
 	 */
-	public List<ImsUser> getUserAll(ImsUserExample userExample) {
+	public List<ImsUser> getUserAll() {
 		// TODO Auto-generated method stub
-		return userMapper.selectByExample(userExample);
+  	    return	userMapper.selectByExample(null);
 	}
 
 	
-	
-	/* (non-Javadoc)
-	 * @see org.future.ims.service.UserService#deleteUserBatch(java.util.List)
-	 */
-	public void deleteUserBatch(List<Integer> ids) {
-		// TODO Auto-generated method stub
-		ImsUserExample userExample = new ImsUserExample();
-		Criteria criteria = userExample.createCriteria();
-		//delete from xxx where emp_id in(1,2,3)
-		criteria.andUserIdIn(ids);
-		userMapper.deleteByExample(userExample);
-	}
-
 	/* (non-Javadoc)
 	 * @see org.future.ims.service.UserService#deleteUser(java.lang.Integer)
 	 */
@@ -72,11 +43,86 @@ public class UserServiceImpl implements UserService{
 	/* (non-Javadoc)
 	 * @see org.future.ims.service.UserService#updateByUser(org.future.ims.pojo.ImsUser)
 	 */
-	public int updateByUser(ImsUser imsUser) {
+	public void updateByUser(ImsUser imsUser) {
 		// TODO Auto-generated method stub
-		return userMapper.updateByPrimaryKeySelective(imsUser);
+		userMapper.updateByPrimaryKeySelective(imsUser);		
 	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#selectUserById(java.lang.Integer)
+	 */
+	public ImsUser selectUserById(Integer id) {
+		
+		return userMapper.selectByPrimaryKey(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#deleteUserBatch(java.util.List)
+	 */
+	public void deleteUserBatch(List<Integer> ids) {
+		ImsUserExample example = new ImsUserExample();
+		Criteria criteria = example.createCriteria();
+		//delete from xxx where emp_id in(1,2,3)
+		criteria.andUserIdIn(ids);
+		userMapper.deleteByExample(example);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#checkUser(java.lang.String)
+	 * 判断学号是否重复
+	 */
+	@Override
+	public boolean checkUser(String studentId) {
+		ImsUserExample example = new ImsUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andStudentIdEqualTo(studentId);
+		long count = userMapper.countByExample(example);
+		return count == 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#saveUser(org.future.ims.pojo.ImsUser)
+	 * 
+	 */
+	@Override
+	public void saveUser(ImsUser imsUser) {
+		// TODO Auto-generated method stub
+		userMapper.insertSelective(imsUser);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#selectByEmail(java.lang.String)
+	 */
+	@Override
+	public ImsUser selectByEmail(String email) {
+		return  userMapper.selectByEmail(email);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#checkEmail(java.lang.String)
+	 */
+	@Override
+	public boolean checkEmail(String email) {
+		ImsUserExample example = new ImsUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andEmailEqualTo(email);
+		long count = userMapper.countByExample(example);
+		return count == 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.future.ims.service.UserService#selectUsersByStudentId(java.lang.String)
+	 */
+	@Override
+	public List<ImsUser> selectUsersByStudentId(String studentId) {
+		
+		return userMapper.selectUsersByStudentId(studentId);
+		
+	}
+
 	
+
 	
 	
 }

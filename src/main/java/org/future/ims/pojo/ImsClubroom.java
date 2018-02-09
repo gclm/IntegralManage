@@ -1,24 +1,30 @@
 package org.future.ims.pojo;
 
+/**
+ * null
+ * 
+ * @author 
+ * 
+ * @date 2017-11-03
+ */
 public class ImsClubroom {
-    private Integer clubroom_id;
+    private Integer clubroomId;
 
-    private String clubroom_name;
+    private String clubroomName;
 
-    
-    public Integer getClubroom_id() {
-		return clubroom_id;
-	}
+    public Integer getClubroomId() {
+        return clubroomId;
+    }
 
-	public void setClubroom_id(Integer clubroom_id) {
-		this.clubroom_id = clubroom_id;
-	}
+    public void setClubroomId(Integer clubroomId) {
+        this.clubroomId = clubroomId;
+    }
 
-	public String getClubroom_name() {
-		return clubroom_name;
-	}
+    public String getClubroomName() {
+        return clubroomName;
+    }
 
-	public void setClubroom_name(String clubroom_name) {
-		this.clubroom_name = clubroom_name == null ? null : clubroom_name.trim();
-	}
+    public void setClubroomName(String clubroomName) {
+        this.clubroomName = clubroomName == null ? null : clubroomName.trim();
+    }
 }

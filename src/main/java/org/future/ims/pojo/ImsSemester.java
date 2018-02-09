@@ -1,37 +1,30 @@
 package org.future.ims.pojo;
 
 /**
- * @ClassName:     ImsSemester.java
- *  
- * @author         孤城落寞
- *
- * @Date           2017年10月22日 上午9:44:33
- *
- * @Description:   学期表  
+ * null
+ * 
+ * @author 
+ * 
+ * @date 2017-11-03
  */
 public class ImsSemester {
-    
-	private Integer semester_id;
+    private Integer semesterId;
 
-    private String semester_name;
+    private String semesterName;
 
-    
-    public Integer getSemester_id() {
-		return semester_id;
-	}
+    public Integer getSemesterId() {
+        return semesterId;
+    }
 
+    public void setSemesterId(Integer semesterId) {
+        this.semesterId = semesterId;
+    }
 
-	public void setSemester_id(Integer semester_id) {
-		this.semester_id = semester_id;
-	}
+    public String getSemesterName() {
+        return semesterName;
+    }
 
-
-	public String getSemester_name() {
-		return semester_name;
-	}
-
-
-	public void setSemester_name(String semester_name) {
-		 this.semester_name = semester_name == null ? null : semester_name.trim();
-	}
+    public void setSemesterName(String semesterName) {
+        this.semesterName = semesterName == null ? null : semesterName.trim();
+    }
 }

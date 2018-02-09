@@ -10,59 +10,235 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
 		<link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}" />
 		<link rel="stylesheet" type="text/css" th:href="@{/static/css/index.css}"/>
+		<style>
+			.container-width{
+		   		 max-width: 400px;
+		    }
+		    .form-group{
+		    	margin: 10px auto;
+		    }
+		    .form{
+		    	margin-top: 40px;
+		    }
+		    .label{
+		   		 color: #777;
+		    	font-size: 12px;
+		    }
+		</style>
+		<link rel="icon" th:href="@{/static/img/logo.ico}" type="image/x-icon"/>	
 	</head>
 	<body>
 		<div class="header">
 			<div class="h-info">
-				<span><a href="javascript:void(0)" class="meun"><i class="glyphicon glyphicon-menu-hamburger"></i></a><a href="javascript:void(0)"><i class="glyphicon glyphicon-refresh"></i></a></span>
+				<span><a href="javascript:void(0)" class="meun"><i class="glyphicon glyphicon-menu-hamburger"></i></a><a href="javascript:void(0)" onclick="window.location.reload();"><i class="glyphicon glyphicon-refresh"></i></a></span>
 				<span class="s2 hidden-xs">积分管理系统</span>
 			</div>
 			<div class="p-info">
-				<span><a href="#"><i class="glyphicon glyphicon-envelope"></i></a></span>
-				<span class="s1"><a>管理员<i class="glyphicon glyphicon-menu-down"></i></a><img src="img/login06.png" alt="管理员头像" class="hidden-xs"/></span>
-				<span class="s3 hidden-xs"><a href="#"><i class="glyphicon glyphicon-cog"></i></a></span>
+				<span><a data-toggle="modal" data-target="#UpdateMail"><i class="glyphicon glyphicon-envelope"></i></a></span>
+				<span class="s1"><a><span th:if="${session.administrator.role == 'administrator'}">办公室主任</span><i class="glyphicon glyphicon-menu-down"></i></a><img th:src="@{/static/pic/{picture}(picture=${session.administrator.pic})}" alt="管理员头像" class="hidden-xs"/></span>
+				<span class="s3"><a th:href="@{/base/logOff.do}+'?role='+${session.administrator.role}" onclick="if(confirm('确定要退出么？')==false)return false;"><i class="glyphicon glyphicon-off"></i></a></span>
 				<div class="info">
-					<p></p>
+					<ul class="dropdown dropdown-menu" role="menu">
+						<li><a href="javascript:void(0)" data-toggle="modal" data-target="#selectUserModal" class="fir">个人资料</a></li>
+						<li><a href="javascript:void(0)" data-toggle="modal" data-target="#updatePasswordModal" class="sec">修改密码</a></li>
+					</ul>
 				</div>
 			</div>
-			
 		</div>
 		<div class="main">
 			<div class="left">
 				<div class="l-header hidden-xs">
 					<div class="myimg">
-						<img src="img/demo-1-bg.jpg" alt="管理员头像" width="54px" height="54px"/>
+						<img th:src="@{/static/pic/{picture}(picture=${session.administrator.pic})}" alt="管理员头像" width="54px" height="54px"/>
 					</div>
 					<div class="p-group">
 						<span>Welcom</span><br />
 						<sapn th:text="${session.administrator.name}"></sapn><br />
-						<span class="unique">状态：<span class="states" th:text="${session.administrator.status}"></span></span>
+						<span class="unique">状态：<span>在线</span></span>
 					</div>
 					
 				</div>
 				<div class="l-body">
 					<div class="list-body">
-						<ul class="nav nav-pills nav-stacked navbar-brand">
-							<li><a href=""  target="right"><i class="glyphicon glyphicon-dashboard"></i><span>&nbsp;&nbsp;查看积分信息</span></a></li>
-							<li><a href=""  target="right"><i class="glyphicon glyphicon-list-alt"></i><span>&nbsp;&nbsp;积分信息录入</span></a></li>
-							<li><a href=""  target="right"><i class="glyphicon glyphicon-user"></i><span>&nbsp;&nbsp;学生信息录入</a></span></li>
-							<li><a th:href="@{/user/userList.do}"><i class="glyphicon glyphicon-education"></i><span>&nbsp;&nbsp;成员管理</a></span></li>
-							<li><a href=""   target="right"><i class="glyphicon glyphicon-tasks"></i><span>&nbsp;&nbsp;学期管理</a></span></li>
-							<li><a href=""   target="right"><i class="glyphicon glyphicon-th"></i><span>&nbsp;&nbsp;友情提示</a></span></li>
+						<ul class="nav nav-pills nav-stacked navbar-brand">						
+							<li><a th:href="@{/integral/integralList.do}"  target="right"><i class="glyphicon glyphicon-dashboard"></i><span>&nbsp;&nbsp;查看积分</span></a></li>
+							<li><a th:href="@{/integral/addInte.do}"  target="right"><i class="glyphicon glyphicon-list-alt"></i><span>&nbsp;&nbsp;录入积分</span></a></li>
+							<li><a th:href="@{/student/studentList.do}" target="right"><i class="glyphicon glyphicon-user"></i><span>&nbsp;&nbsp;学生管理</a></span></li>
+							<li><a th:href="@{/user/userList.do}" target="right"><i class="glyphicon glyphicon-education"></i><span>&nbsp;&nbsp;成员管理</a></span></li>
+							<li><a th:href="@{/semester/semesterList.do}"   target="right"><i class="glyphicon glyphicon-tasks"></i><span>&nbsp;&nbsp;学期管理</a></span></li>
+							<li><a th:href="@{/class/classList.do}" target="right"><i class="glyphicon glyphicon-education"></i><span>&nbsp;&nbsp;班级管理</a></span></li>
+							<li><a th:href="@{/clubroom/clubroomList.do}" target="right"><i class="glyphicon glyphicon-tasks"></i><span>&nbsp;&nbsp;部室管理</a></span></li>
+							<li><a href="../welcome.html"   target="right"><i class="glyphicon glyphicon-th"></i><span>&nbsp;&nbsp;友情提示</a></span></li>
+							<li><a th:href="@{/sort/sort.do}"   target="right"><i class="glyphicon glyphicon-th"></i><span>&nbsp;&nbsp;学生端</a></span></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		<div class="right">
-			<iframe th:src="@{/integral.html}" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
+			<iframe id="frame" src="../welcome.html" name="right" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
 		</div>
 		</div>
+		
+    <div class="modal fade" id="selectUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4  class="modal-title">个人资料</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container container-width">
+				       <form class="form-horizontal " role="form">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">学号</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="num" th:value="${session.administrator.studentId}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">姓名</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="name" th:value="${session.administrator.name}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">部室</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="name" th:value="${session.administrator.clubroom}" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">邮箱</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="email_select_input" th:value="${session.administrator.email}"  readonly="readonly">
+								</div>
+							</div>
+						</form>
+				   </div>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+	</div>
+
+	<div class="modal fade" id="updatePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					修改密码
+				</h4>
+			</div>
+			<div class="modal-body">
+				<div class="container container-width">
+					<div class="title">
+						<h2>
+							<small>按照提示输入信息</small>
+						</h2>
+					</div>
+				       <form class="form-horizontal " role="form">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">旧密码</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="endPassword">
+								    <span class="help-block"></span>
+									<input type="hidden" class="form-control" id="endPassword2" th:value="${session.administrator.password}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">新密码</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="password1" >
+									<span class="help-block"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">再次输入</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="password2">
+									<span class="help-block"></span>
+								</div>
+							</div>
+						</form>
+				   </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" id="password_update_btn">
+					修改
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+<div class="modal fade" id="UpdateMail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<small>设置找回密码发件邮箱</small>
+			</div>
+			<div class="modal-body">
+				<div class="container container-width">
+				       <form class="form-horizontal " role="form" id="form-horizontal3">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">邮箱账号</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="emailName" id="emailName">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">授权码</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" name="eamilPassword" id="emailPassword">
+								</div>
+							</div>
+						</form>
+				    </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="updateEmailPassword">
+					确定
+				</button>
+			</div>
+			
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
 		<script type="text/javascript" th:src="@{/static/js/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/jquery.md5.js}"></script>
+		<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>	
 		<script type="text/javascript">
-			$('.s1>a').click(function(){
+		$(function(){
+			$("#frame").load(function() {
+			 var iframeHeight = $(this).contents().find("body").height()+200;
+			 $(this).height(iframeHeight);
+		
+			 });
+		})
+		
+		
+		   $('.s1>a').click(function(){
 				$('.info').toggle();
+				$('.dropdown').toggle();
 			});
-			$('.p-info').bind("selectstart",function(){ return false;})
+			$('.p-info').bind("selectstart",function(){ return false;});
+			
+			$(".fir , .sec ").click(function(){
+				$(".info").css("display","none");
+				$(".info ul").css("display","none");
+			});
 			
 			$('.meun').click(function(){
 				var bool = $('.l-body').width()<200;
@@ -71,6 +247,125 @@
 				}
 				
 			});
+			$(".list-body ul li a").click(function(){
+				var bool = $('.l-body').width()<200;
+				if(bool){
+					$('.l-body').css("display","none");
+				}
+			})
+		</script>
+		<script type="text/javascript">
+		
+			//原密码验证
+			$("#endPassword").change(function() {			
+				var endPassword = this.value;
+				var endPassword2= $("#endPassword2").val(); 	
+				var str=$.md5(endPassword).substring(4, 12);			
+				
+				if(endPassword.length>16){
+				   show_validate_msg("#endPassword", "error", "密码长度必须小于16位");
+			       return false;
+			    } 
+			    
+				if(str!= endPassword2){
+					//应该清空这个元素之前的样式
+					show_validate_msg("#endPassword", "error", "原密码输入错误");
+					return false;
+				}else{
+					show_validate_msg("#endPassword", "success", "原密码验证成功,请输入新密码");
+				};
+			});
+			
+			
+			$("#password1").change(function() {			
+                var password1= this.value; 	
+				
+				if(endPassword.length>16){
+				   show_validate_msg("#password1", "error", "密码长度必须小于16位");
+			       return false;
+			    }else{
+				   show_validate_msg("#password1", "success", "请再次输入新密码");
+				}
+			});
+			
+			
+			$("#password2").change(function() {			
+				var password2 = this.value;
+				if(password2.length>16){
+				   show_validate_msg("#password2", "error", "密码长度必须小于16位");
+			       return false;
+			    }
+			});
+			
+		
+		$("#password_update_btn").click(function(){ 		   		
+		   
+		   var password1= $("#password1").val(); 		
+		   var password2= $("#password2").val(); 
+		   var email= $("#email_select_input").val(); 
+        
+		   //简单验证
+		   if(password1 == null || password1 == ''  || password2 == null || password2 == ''){
+		        alert("密码不能为空");  
+		   }else if(password2!= password1){
+				//应该清空这个元素之前的样式
+				show_validate_msg("#password2", "error", "前后两次输入的密码不相同");
+				return false;
+		   }else{
+			 var password=$.md5(password1).substring(4, 12);
+		      //修改密码
+		      $.ajax({
+				url : "updatePassword.do",
+				data : {"password":password,"toMail":email},
+				type : "POST",
+				success : function(result) {
+				    if (result.code == 200) {
+				       alert("密码修改成功,请重新登录");
+			           document.location = "login_index.do";
+					}
+				 } 
+		      });  
+			};
+		});  
+	   
+	   
+	   //显示校验结果的提示信息
+		function show_validate_msg(ele, status, msg) {
+			//清除当前元素的校验状态
+			$(ele).parent().removeClass("has-success has-error");
+			$(ele).next("span").text("");
+			
+			if ("success" == status) {
+				$(ele).parent().addClass("has-success");
+				$(ele).next("span").text(msg);
+			} else if ("error" == status) {
+				$(ele).parent().addClass("has-error");
+				$(ele).next("span").text(msg);
+			}
+		}
+	   
+	   //添加发件人邮箱的ajax
+	   $("#updateEmailPassword").click(function(){
+	   			var name = $("#emailName").val();
+	   			var password = $("#emailPassword").val();
+	   			if((name != '') && (password != '')){
+	   				$.ajax({
+				     url:"addPassword.do",
+				     type:"PUT",
+				     data:$("#form-horizontal3").serialize(),
+				     contentType : 'application/x-www-form-urlencoded', //contentType很重要
+				     success: function(){
+				        alert("添加发件邮箱成功！");
+				        window.location.reload();
+				     }    
+		         });
+	   			}else{
+	   				alert("请完整填写信息！");
+	   			}
+			        
+		});
+	   
+	   
 		</script>
 	</body>
 </html>

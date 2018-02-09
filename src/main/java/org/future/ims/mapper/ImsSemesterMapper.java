@@ -17,6 +17,9 @@ public interface ImsSemesterMapper {
     int insertSelective(ImsSemester record);
 
     List<ImsSemester> selectByExample(ImsSemesterExample example);
+    
+    //通过学期名称查询
+    List<ImsSemester> getSemesterByName(String name);
 
     ImsSemester selectByPrimaryKey(Integer semesterId);
 

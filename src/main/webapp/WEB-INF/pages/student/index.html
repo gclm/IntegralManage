@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>积分查询</title>
+		<!--微信端登录界面-->
+		<link rel="stylesheet" type="text/css"
+			th:href="@{/static/css/phone.css}" />
+		<style type="text/css">
+		    .input-group{
+		    	width: 90%;
+		    }
+		    .form{
+		    	margin-top: 40px;
+		    }
+		    .label{
+		   		 color: #777;
+		    	font-size: 12px;
+		    }
+		</style>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+				var me = [[${searchMeg}]];
+					if(me != '' && me != null){
+						 	alert(me);
+						 } 
+			/*]]>*/
+			</script>
+	</head>
+	<body>
+		<div class="contain">
+			<div class="center">
+				<div class="icon">
+					<img th:src="@{/static/img/eport.png}" width="120px" height="120px" class="img-responsive">
+				</div>
+				<div class="title">
+					<p>学生综合素质积分查询</p>
+				</div>
+				<form th:action="@{/sort/sortList.do?i=0}" method="post">
+					<div class="form-center">
+						<div class="input-group">
+							<input type="text" placeholder="请输入个人学号" class="input_control" 
+							onfocus="this.placeholder=''" onblur="this.placeholder='请输入学号'" name="studentId" required="required"/>
+						</div>
+						<div class="input-group">
+							<select name="intSemester" id="mysel">
+								<option th:each="semester:${allSemester}" th:text="${semester.semesterName}"></option>
+							</select>
+						</div>
+						<div class="input-group">
+							<input type="submit" id="mybtn" value="查    询" class="input_control" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

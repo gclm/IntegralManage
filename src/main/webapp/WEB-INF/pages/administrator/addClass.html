@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>班级录入</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/normalize.css}" />
+	    <link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+	    <link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}" />
+	    <link rel="stylesheet" type="text/css" th:href="@{/static/css/stuInfo.css}" />
+		<!--[if IE]-->
+		<script th:src="@{/static/js/html5.js}" /></script>
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+			var me = [[${addClassMessage}]];
+					 if(me != '' && me != null){
+					 	alert(me);
+					 } 
+		/*]]>*/
+		</script>
+		<!--[endif]-->
+	</head>
+	<body>
+		<div class="r-top">
+				<div class="titile">
+					<div class="img">
+						<i class="glyphicon glyphicon-user"></i>
+					</div>
+					<div class="detail-info">
+						<span class="p1">班级信息录入</span><br />
+						<span class="p2"><i class="glyphicon glyphicon-grain"></i>&nbsp;表格格式应该为&nbsp;&nbsp;.xls或.xlsx</span>
+					</div>
+				</div>
+				<div class="tab">
+					<span><a href="javascript:void(0)" class="tab-left">批量录入</a>
+						<span class="blank"></span>
+				</div>
+			</div>
+			<div class="r-main">
+				<div class="mass">
+					<div class="put" id="uploa">
+						<div class="area">
+							<p>点击此处进行上传</p>
+							<i></i>
+						</div>
+					</div>
+					<form th:action="@{/class/import.do}" th:method="post" enctype="multipart/form-data">
+                    	<input type="file" name="upfile" id="upload" style="position:relative; left:-90px"><br/>
+                  	    <input type="submit" value="提交" id="submit" style="display: none;">
+               		</form>
+					<div class="putfile" id="submi">
+							<a class="btn-file">
+								<i></i>
+								<span>上传文档</span>
+							</a>
+						</div>
+					
+		</div>
+			</div>			
+			<script type="text/javascript" th:src="@{/static/js/jquery.min.js}"></script>
+			<script type="text/javascript" th:src="@{/static/js/jifen.js}"></script>
+			<script type="text/javascript" charset="utf-8">
+				function change(id1, id2) {
+					function getId(a) {
+						return document.getElementById(a)
+					}
+					getId(id1).onclick = function() {
+						getId(id2).click()
+					}
+				}
+				change("uploa","upload");
+ 				change("submi","submit");
+ 			</script>
+	</body>
+</html>

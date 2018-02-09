@@ -58,7 +58,7 @@ form div{
 	padding: 2px 0px 5px 10px;
 }
 form i{
-	position: absolute;
+	position: absolute!important;
 	margin-left: -28px;
 	background:url(../img/login_ico.png) no-repeat;
 	border-radius: 3px;
@@ -74,7 +74,6 @@ form i{
 .msg{
 	text-align: center;
 	color: red;
-	display: none;
 }
 .submit input{
 	float: right;
@@ -110,7 +109,7 @@ form i{
 	}
 	form div{
 		width: 220px;
-		margin: 20px auto;
+		margin: 10px auto;
 	}
 	.titile{
 		text-align: center;

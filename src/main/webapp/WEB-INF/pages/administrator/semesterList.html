@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>学期管理</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/normalize.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/termManger.css}" />
+<script th:inline="javascript">
+			/*<![CDATA[*/
+				var me = [[${addSemesterMeg}]];
+					if(me != '' && me != null){
+						 	alert(me);
+						 } 
+			/*]]>*/
+			</script>
+<style>
+			.container-width {
+				max-width: 400px;
+			}
+			
+			.form-group {
+				margin: 10px auto;
+			}
+			
+			.form {
+				margin-top: 40px;
+			}
+			
+			.label {
+				color: #777;
+				font-size: 12px;
+			}
+			</style>
+</head>
+<body>
+	<div class="r-top">
+		<div class="titile">
+			<div class="img">
+				<i class="glyphicon glyphicon-user"></i>
+			</div>
+			<div class="detail-info">
+				<span class="p1">学期管理</span><br /> <span class="p2"><i
+					class="glyphicon glyphicon-grain"></i>&nbsp;进行学期&nbsp;学年的添加</span>
+			</div>
+		</div>
+	</div>
+	<div class="r-main">
+		<div class="mass">
+			<!-- 添加form表单 -->
+			<form th:action="@{/semester/addSemester.do}" th:method="post">
+				<div class="term">
+					<span>学期</span> <span class="date"> 
+					<input type="tel" name="start" pattern="^\d{4}$" required oninvalid="setCustomValidity('请输入正确的4位数字');"
+						oninput="setCustomValidity('');" placeholder="开始学年" style="font-size:25px"/>- <input
+						type="tel" name="end" pattern="^\d{4}$" required
+						oninvalid="setCustomValidity('请输入正确的4位数字');"
+						oninput="setCustomValidity('');" placeholder="结束学年"  style="font-size:25px"/>
+					</span>学年
+					<select name="seme" class="choice">
+						<option value="">请选择学期</option>
+						<option value="第一学期">第一学期</option>
+						<option value="第二学期">第二学期</option>
+					</select>
+				</div>
+				<div class="put">
+					<div class="area">
+						<input type="submit" value="添加"
+							class="btn btn-default" />
+					</div>
+				</div>
+			</form>
+			
+			<h3>学期列表</h3>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<td>ID</td>
+							<td>学期</td>
+							<td>操作</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="prod : ${pageInfo}">
+							<td th:text="${prod.semesterId}"></td>
+							<td th:text="${prod.semesterName}"></td>
+							<td><a href="javascript:void(0)" class="edit"
+								data-toggle="modal" data-target="#myModal"><img
+									th:src="@{/static/img/edit.png}" alt="编辑" width="20px"
+									height="20px" /></a> <span class="mid">|</span> <a
+								href="javascript:void(0)" class="delete"><img
+									th:src="@{/static/img/delete.png}" width="20px" height="20px" /></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+<!-- 修改模态框 -->
+<div class="modal fade in" id="myModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">学期信息修改</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal" role="form" id="form-horizontal">
+							<div class="form-group">
+							
+									<input type="tel"
+										name="start" pattern="^\d{4}$" required
+										oninvalid="setCustomValidity('请输入正确的4位数字');"
+										oninput="setCustomValidity('');" placeholder="开始学年" id="start" style="width:50px;"/>- 
+									<input type="tel" name="end" pattern="^\d{4}$" required
+										oninvalid="setCustomValidity('请输入正确的4位数字');"
+										oninput="setCustomValidity('');" placeholder="结束学年" id="end" style="width:50px;"/>学年
+									<select name="seme" class="choice two">
+										<option id="sem"></option>
+										<option value="第一学期">第一学期</option>
+										<option value="第二学期">第二学期</option>
+									</select>
+										<input type="hidden"
+										class="form-control" id="semesterId" value="" placeholder="请输入ID" name="semesterId">
+							
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button id="updateSemester" type="submit" class="btn btn-default btn-primary">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script th:src="@{/static/js/jquery.min.js}" type="text/javascript"
+	charset="utf-8"></script>
+<script th:src="@{/static/js/bootstrap.min.js}" type="text/javascript"
+	charset="utf-8"></script>
+<script th:inline="javascript">
+			//模态框的显示与隐藏
+			$('#myModal').modal({
+				        backdrop: 'static',
+				        show:false
+				   		 });
+				    var bg = document.getElementsByClassName("bg")[0];
+				    $("button").click(function () {
+				        bg.style.display ="block";
+				    });
+				    $(".close").click(function () {
+				        bg.style.display = "none";
+				    })
+			//点击修改，填充信息
+				$('.edit').click(function() {
+					var id = $(this).parent().parent().find("td").eq(0).text();
+					var name = $(this).parent().parent().find("td").eq(1).text();
+					var start = name.substring(0, 4);
+					var end = name.substring(5, 9);
+					var sem = name.substring(11,17);
+					var t = sem.trim();
+					$("#semesterId").val(id);
+					$("#start").val(start);
+					$("#end").val(end);
+					$("#sem").text(t);
+					$("#sem").val(t);
+				})
+				
+				//点击更新，提交信息
+				$(document).on("click", "#updateSemester", function() {
+					//发送ajax请求保存更新的数据
+					$.ajax({
+						url : "updateSemester.do",
+						type : "post",
+						data : $("#form-horizontal").serialize(),
+						success : function(meg) {
+							if (meg == "ok") {
+								alert("修改成功");
+								window.location.reload();
+							} else if(meg == "no"){
+								alert("学期重复，修改失败");
+							}else if(meg == "no2"){
+								alert("学期格式不符合要求！")
+							}
+			
+						}
+					});
+				}); 	
+				
+			//单个删除
+			$(document).on("click",".delete",function(){
+				//1、弹出是否确认删除对话框
+				 var Id = $(this).parents("tr").find("td:eq(0)").text();
+				 var Name = $(this).parents("tr").find("td:eq(1)").text();
+				 if(confirm("确认删除【"+Name+"】吗？")){
+					$.ajax({
+						url:"deleteSemester.do",
+ 						type:'post',
+ 						data:{ids:Id},
+						contentType:'application/x-www-form-urlencoded', //contentType很重要
+						success:function(){
+							alert("删除成功");
+							window.location.href="semesterList.do";
+						}
+					}); 
+			
+ 				}  
+			});			
+</script>
+</body>
+</html>

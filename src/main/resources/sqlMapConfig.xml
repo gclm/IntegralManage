@@ -10,4 +10,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<package name="org.future.ims.pojo" />
 	</typeAliases>
 	
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!--分页参数合理化  -->
+			<property name="reasonable" value="true"/>
+		</plugin>
+	</plugins>
+	
+	
 </configuration>

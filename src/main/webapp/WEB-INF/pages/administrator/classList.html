@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>班级管理</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/normalize.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/stuManger.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/static/css/fileinput.min.css}" />
+<script th:inline="javascript">
+		/*<![CDATA[*/
+			var me = [[${searchMeg}]];
+					 if(me != '' && me != null){
+					 	alert(me);
+					 } 
+		/*]]>*/
+		</script>
+<style>
+.container-width {
+	max-width: 400px;
+}
+
+.form-group {
+	margin: 10px auto;
+}
+
+.form {
+	margin-top: 40px;
+}
+
+.label {
+	color: #777;
+	font-size: 12px;
+}
+</style>
+</head>
+<body>
+	<div class="r-top">
+		<div class="titile">
+			<div class="img">
+				<i class="glyphicon glyphicon-education"></i>
+			</div>
+			<div class="detail-info">
+				<span class="p1">班级管理</span><br /> <span class="p2"><i
+					class="glyphicon glyphicon-grain"></i>&nbsp;进行班级的添加或者修改</span>
+			</div>
+		</div>
+		<form th:action="@{/class/classList.do}" th:method="post">
+			<div class="myinput">
+				<div class="e-input">
+					<input type="text" placeholder="输入班级名称查询" name="replace"
+						th:value="${replace }" />
+				</div>
+				<div class="search">
+					<button type="submit">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="r-main">
+
+		<div class="table-responsive">
+			<a th:href="@{/class/addCla.do}" target="right" style="text-decoration: none; font-size:1.2rem;">批量导入</a>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th><input type="checkbox" id="all" /></th>
+						<td>ID</td>
+						<td>班级</td>
+						<td>操作</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="prod : ${pageInfo.list}">
+						<td class="first"><input type="checkbox" /></td>
+						<td th:text="${prod.classId}"></td>
+						<td th:text="${prod.className}"></td>
+						<td><a href="javascript:void(0)" class="edit"><img
+								th:src="@{/static/img/edit.png}" alt="编辑" width="20px"
+								height="20px" /></a> <span class="mid">|</span> <a
+							href="javascript:void(0)" class="delete"><img
+								th:src="@{/static/img/delete.png}" width="20px" height="20px" /></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 显示分页信息 -->
+			<div class="recode">
+				<p>
+					当前 <span th:text="${pageInfo.pageNum}"></span>页,总<span
+						th:text="${pageInfo.pages }"></span> 页,总 <span
+						th:text="${pageInfo.total}"></span> 条记录
+				</p>
+				
+			</div>
+
+			<!-- 分页条信息 -->
+			<div class="page">
+				<ul class="allpage">
+
+					<li><a th:href="@{/class/classList.do?(pn=1,replace=${replace })}">首页</a></li>
+						
+					<li th:if="${pageInfo.hasPreviousPage}">
+						<a th:href="@{/class/classList.do?(pn=${pageInfo.pageNum-1},replace=${replace })}">&laquo;</a>
+					</li>
+
+					<span th:each="page_Num : ${pageInfo.navigatepageNums}"> 
+					
+					<li th:if="${page_Num == pageInfo.pageNum}" class="active">
+						<a href="#"><c th:text="${page_Num}"></c></a></li>
+						
+					<li th:if="${page_Num != pageInfo.pageNum }">
+						<a th:href="@{/class/classList.do?(pn=${page_Num },replace=${replace })}">
+							<c th:text="${page_Num}"></c></a></li>
+							
+					</span>
+
+					<li th:if="${pageInfo.hasNextPage }">
+						<a th:href="@{/class/classList.do?(pn=${pageInfo.pageNum+1},replace=${replace })}">
+							<c aria-hidden="true">&raquo;</c></a></li>
+
+					<li><a
+						th:href="@{/class/classList.do?(pn=${pageInfo.pages},replace=${replace })}">末页</a></li>
+				</ul>
+			</div>
+			
+		<div class="mybtn">
+			<input type="button" value="单个添加" class="btn btn-default"
+				data-toggle="modal" data-target="#mysecModal" /> <span></span> <input
+				type="button" name="cancel" id="cancel" value="删除班级"
+				class="btn btn-default" />
+			
+		</div>
+	</div>
+	
+	<!-- 修改模态框 -->
+	<div class="modal fade in" id="myModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">用户信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal" role="form" id="form-horizontal">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">班级</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="class" value=""
+										name="className" placeholder="请输入班级"><input
+										type="hidden" class="form-control" id="classId" value=""
+										placeholder="请输入ID" name="classId">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button id="updateClass" type="submit"
+						class="btn btn-default btn-primary">确认</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 添加模态框 -->
+	<div class="modal fade in" id="mysecModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">用户信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal" role="form" id="form-horizontal2">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">班级</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="class" value=""
+										name="className" placeholder="请输入班级">
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button id="addClass" type="submit"
+						class="btn btn-default btn-primary">添加</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/static/js/jquery.min.js}" type="text/javascript"
+		charset="utf-8"></script>
+	<script th:src="@{/static/js/fileinput.min.js}" type="text/javascript"
+		charset="utf-8"></script>
+	<script th:src="@{/static/js/bootstrap.min.js}" type="text/javascript"
+		charset="utf-8"></script>
+	<script th:inline="javascript">
+		$(function() {
+			$('#all').click(function() {
+				if (this.checked) {
+					$('.first :checkbox').prop("checked", true)
+				} else {
+					$('.first :checkbox').prop("checked", false)
+				}
+			});
+		})
+		$('#myModal').modal({
+			backdrop : 'static',
+			show : false
+		});
+		var bg = document.getElementsByClassName("bg")[0];
+		$("button").click(function() {
+			bg.style.display = "block";
+		});
+		$(".close").click(function() {
+			bg.style.display = "none";
+		})
+	
+		//点击添加，提交信息
+		$(document).on("click", "#addClass", function() {
+			if($("#class").val() != ''){
+			//发送ajax请求保存添加的数据
+			$.ajax({
+				url : "addClass.do",
+				type : "PUT",
+				data : $("#form-horizontal2").serialize(),
+				success : function(meg) {
+					if (meg == "ok") {
+						alert("添加成功");
+						window.location.reload();
+					} else {
+						alert("班级名称重复，添加失败");
+					}
+	
+				}
+			});
+			}else{
+				alert("班级不能为空");			
+			}
+		});
+	
+		//点击修改，填充信息
+		$('.edit').click(function() {
+			var id = $(this).parent().parent().find("td").eq(1).text();
+			var name = $(this).parent().parent().find("td").eq(2).text();
+			$("#class").val(name);
+			$("#classId").val(id);
+			$('#myModal').modal("show");
+		})
+	
+		//点击更新，提交信息
+		$(document).on("click", "#updateClass", function() {
+			//发送ajax请求保存更新的数据
+			$.ajax({
+				url : "updateClass.do",
+				type : "PUT",
+				data : $("#form-horizontal").serialize(),
+				success : function(meg) {
+					if (meg == "ok") {
+						alert("修改成功");
+						window.location.reload();
+					} else {
+						alert("班级名称重复，修改失败");
+					}
+	
+				}
+			});
+		});
+	
+	
+		//单个删除
+		$(document).on("click", ".delete", function() {
+			//1、弹出是否确认删除对话框
+			var Name = $(this).parents("tr").find("td:eq(2)").text();
+			var Id = $(this).parents("tr").find("td:eq(1)").text();
+			if (confirm("确认删除【" + Name + "】吗？")) {
+				$.ajax({
+					url : "deleteClass.do",
+					type : 'post',
+					data : {
+						ids : Id
+					},
+					contentType : 'application/x-www-form-urlencoded', //contentType很重要
+					success : function() {
+						alert("删除成功");
+						window.location.reload();
+					}
+				});
+			}
+		});
+	
+		//点击全部删除，就批量删除
+		$(document).on("click", "#cancel", function() {
+			var Names = "";
+			var del_idstr = "";
+			$.each($(".first :checked"), function() {
+				//this
+				Names += $(this).parents("tr").find("td:eq(2)").text() + ",";
+				//组装id字符串
+				del_idstr += $(this).parents("tr").find("td:eq(1)").text() + "-";
+			});
+			//去除empNames多余的,
+			Names = Names.substring(0, Names.length - 1);
+			//去除删除的id多余的-
+			del_idstr = del_idstr.substring(0, del_idstr.length - 1);
+			if (confirm("确认删除【" + Names + "】吗？")) {
+				//发送ajax请求删除
+				$.ajax({
+					url : 'deleteClass.do',
+					type : "post",
+					data : {
+						ids : del_idstr
+					},
+					success : function() {
+						alert("成功！！！");
+						window.location.reload();
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>

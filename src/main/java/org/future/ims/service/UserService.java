@@ -24,21 +24,11 @@ public interface UserService {
 	 //登录
 	ImsUser getUserByStudentId(String studentId);
 
-	//添加批量添加用户
-	List<ImsUser> addUserList(ImsUser user);
 
-	//添加管理员
-	int updateUserById(ImsUser user);
-     
-	//添加用户
-	int addUser(ImsUser user);
-    
 	//用户列表
-    List<ImsUser>  getUserAll(ImsUserExample userExample);
+    List<ImsUser>  getUserAll();
     
-    //修改用户
     
-
 	/** 
 	 * 删除用户
 	 * 
@@ -51,14 +41,43 @@ public interface UserService {
      * 
 	 * @param del_ids
 	 */
-	void deleteUserBatch(List<Integer> del_ids);
+	void deleteUserBatch(List<Integer> ids);
 
 	/**
 	 * @param imsUser
 	 */
-	int updateByUser(ImsUser imsUser);
+	void updateByUser(ImsUser imsUser);
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	ImsUser selectUserById(Integer id);
+
+	/**
+	 * @param studentId
+	 * @return
+	 */
+	boolean checkUser(String studentId);
+
+	/**
+	 * @param imsUser
+	 */
+	public void saveUser(ImsUser imsUser);
+    
+    /**
+     * @param email
+     * @return
+     */
+    ImsUser  selectByEmail(String email);
+
+
+	/**
+	 * @param email
+	 * @return
+	 */
+	boolean checkEmail(String email);
 	
 
-    
-	
+	List<ImsUser> selectUsersByStudentId(String  studentId);
 }

@@ -10,8 +10,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
-
-	<context:property-placeholder location="classpath:jdbc.properties"/>
+<context:property-placeholder location="classpath:jdbc.properties"/>
 	
 	<!-- 数据库连接池 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -42,6 +41,7 @@
 	
 	<!-- 开启注解 -->
 	<tx:annotation-driven  transaction-manager="transactionManager"/>
+	
 	
 	
 </beans>

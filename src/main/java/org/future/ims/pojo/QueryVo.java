@@ -11,8 +11,10 @@ package org.future.ims.pojo;
  */
 public class QueryVo {
     
-	 ImsUser user;
-
+	ImsUser user;
+    
+	
+	
 	public ImsUser getUser() {
 		return user;
 	}

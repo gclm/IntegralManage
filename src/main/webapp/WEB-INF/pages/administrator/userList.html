@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>成员管理</title>
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/normalize.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/demo.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/fileinput.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/static/css/stuManger.css}" />
+<style>
+.container-width {
+	max-width: 400px;
+}
+
+.form-group {
+	margin: 10px auto;
+}
+
+.form {
+	margin-top: 40px;
+}
+
+.label {
+	color: #777;
+	font-size: 12px;
+}
+.ipt {
+     display: none;
+ }
+ .box {
+     width: 74px;
+     height: 30px;
+     line-height: 30px;
+     overflow: hidden;
+     border: 1px solid #eee;
+     border-radius: 4px;
+     position: relative;
+     cursor: pointer;
+ }
+label {display:inline-block;}
+ .ipt:checked + .box .switch-btn {
+     left: 0;
+ }
+ .switch-btn {
+     position: absolute;
+     left: -37px;
+     top: 0;
+     width: 111px;
+     height: 30px;
+     transition: all 0.5s;
+ }
+ .switch-btn span{
+     width: 37px;
+     height: 30px;
+     display: block;
+     text-align: center;            
+     float: left;
+     font-size: 14px;
+ }
+ .on {
+     background: #52B13C;
+     color: white;
+ }
+ .white {
+     background: white;
+ }
+ .off {
+     background: #EEEEEE;
+ }
+</style>
+<script th:inline="javascript">
+/*<![CDATA[*/
+          
+    var deleteMessages = [[${deleteMessages}]];
+    if (deleteMessages !== null && deleteMessages !== undefined && deleteMessages !== '') { 
+	  	alert(deleteMessages);
+    } 
+
+/*]]>*/
+</script>
+</head>
+<body>
+	<div class="r-top">
+		<div class="titile">
+			<div class="img">
+				<i class="glyphicon glyphicon-education"></i>
+			</div>
+			<div class="detail-info">
+				<span class="p1">成员管理</span><br /> <span class="p2"><i
+					class="glyphicon glyphicon-grain"></i>&nbsp;进行成员的添加或者修改</span>
+			</div>
+		</div>
+		<div class="myinput">
+			<form th:action="@{/user/userList.do}" th:method="post" id="pageForm">
+				<div class="e-input">
+					<input type="text" name="studentId" placeholder="输入学号查询"
+						th:value="${studentId}" />
+				</div>
+				<div class="search">
+					<button type="submit">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+				<div style="clear: both;"></div>
+			</form>
+		</div>
+	</div>
+	<div class="r-main">
+		<form action="" class="myform">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="all" /></th>
+							<td>ID</td>
+							<td>学号</td>
+							<td>姓名</td>
+							<td>部室</td>
+							<td>身份</td>
+							<td>邮箱</td>
+							<td>头像</td>
+							<td>操作</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="prod : ${pageInfo.list}">
+							<td class="first"><input type="checkbox" /></td>
+							<td th:text="${prod.userId}"></td>
+							<td th:text="${prod.studentId}"></td>
+							<td th:text="${prod.name}"></td>
+							<td th:text="${prod.clubroom}"></td>
+							<td th:if="${prod.role} == admin">办公室成员</td>
+							<td th:if="${prod.role} == administrator">办公室主任</td>
+							<td th:if="${prod.role} == tourists">学生会成员</td>
+							<td th:text="${prod.email}"></td>
+						    <td ><img th:src="@{/static/pic/{picture}(picture=${prod.pic})}" height="30px" width="70px"/></td>
+							<td><a  class="edit" data-toggle="modal" data-target="#userUpdateModal"><img
+									th:src="@{/static/img/edit.png}" alt="编辑" width="20px"
+									height="20px" /></a> <span class="mid">|</span> <a
+								    href="javascript:void(0)" class="delete"><img
+									th:src="@{/static/img/delete.png}" width="20px" height="20px" /></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="recode">
+					<p>
+						当前 <span th:text="${pageInfo.pageNum}"></span>页,总<span th:text="${pageInfo.pages }"></span>
+						页,总 <span th:text="${pageInfo.total}"></span> 条记录
+					</p>
+				</div>
+				<div class="page">
+					<ul class="allpage">
+						<li><a th:href="@{/user/userList.do?(pn=1,studentId=${studentId})}">首页</a></li>
+						<li th:if="${pageInfo.hasPreviousPage}">
+						    <a th:href="@{/user/userList.do?(pn=${pageInfo.pageNum-1},studentId=${studentId})}">&laquo;</a>
+						</li>
+						
+                      <span th:each="page_Num : ${pageInfo.navigatepageNums}">
+                      
+						<li class="active" th:if="${page_Num == pageInfo.pageNum}" >
+						     <a href="#"><i th:text="${page_Num}"></i></a>
+						</li>
+						
+						<li th:if="${page_Num != pageInfo.pageNum }">
+						   <a th:href="@{/user/userList.do?(pn=${page_Num },studentId=${studentId})}"><i th:text="${page_Num}"></i></a>
+					    </li>
+					    
+					  </span> 
+					
+						<li th:if="${pageInfo.hasNextPage }">
+						    <a th:href="@{/user/userList.do?(pn=${pageInfo.pageNum+1},studentId=${studentId})}">&raquo;</a>
+						</li>
+						
+						<li><a th:href="@{/user/userList.do?(pn=${pageInfo.pages},studentId=${studentId})}">尾页</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="mybtn">
+				<input type="button" value="添加用户" class="btn btn-default bcolor"
+					data-toggle="modal" data-target="#userAddModal" id="user_add_btn" /> <span></span>
+				<input type="button" name="cancel" id="cancel" value="删除用户"
+					class="btn btn-default bcolor" />
+			</div>
+		</form>
+	</div>
+
+	<!-- 添加用户信息的模态框 -->
+	<div class="modal fade in" id="userAddModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">用户信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal" role="form" id="addUser" method="post"  enctype="multipart/form-data" >
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">学号</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control"
+										id="studentId_add_input" name="studentId" placeholder="请输入学号"/>
+									<span class="help-block"></span>
+									<input type="hidden" class="form-control"
+										id="password_add_input" name="password"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">姓名</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="userName_add_input" name="name"
+										placeholder="请输入姓名"  pattern="^[\u2E80-\u9FFF]{2,4}"  required  oninvalid="setCustomValidity('姓名为2-4位汉字');"  oninput="setCustomValidity('');" />
+								    <span class="help-block"></span>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">部室</label>
+								<div class="col-sm-9">
+									<select name="clubroom" class="selectpicker form-control"  >
+										<option th:each="club:${allRoom}" th:text="${club.clubroomName}"></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">身份</label>
+								<div class="col-sm-9">
+									<input name="role" type="radio" value="admin" />办公室成员
+									<input name="role" type="radio" value="tourists" />学生会成员
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="" class="col-sm-3 control-label">邮箱</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="email_add_input" 
+									    name="email" placeholder="请输入邮箱"  />
+								    <span class="help-block"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-3 control-label">头像</label>
+								<div class="col-sm-9">
+									<input type="file" class="file"  name="pric" onchange="addPric()" >
+									<input type="hidden" class="file"  id="pictureFile_add_input"  name="pic"  onchange="addPric()" >
+								</div>
+							</div>
+
+						</form>
+					</div>
+
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-default btn-primary">重置</button>
+					<button type="button"  id="user_save_btn" class="btn btn-default btn-primary">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 修改用户信息的模态框 -->
+	<div class="modal fade in" id="userUpdateModal" tabindex="-1">
+		<!--淡入淡出在最外层添加-->
+		<!--窗口声明-->
+		<div class="modal-dialog modal-md">
+			<!--小窗口在窗口声明处添加-->
+			<!-- modal-content 内容声明 -->
+			<div class="modal-content">
+				<!--头部-->
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+					<h4 class="modal-title">修改用户信息</h4>
+				</div>
+				<!--主体-->
+				<div class="modal-body">
+					<div class="container container-width">
+						<div class="title">
+							<h2>
+								<small>按照提示输入信息</small>
+							</h2>
+						</div>
+						<form class="form-horizontal " role="form" id="updateUser" method="post"  enctype="multipart/form-data">
+							<div class="form-group">
+								<label for="firstname" class="col-sm-3 control-label">学号</label>
+								<div class="col-sm-9">
+								    <input type="hidden" class="form-control" id="userId_update_input" value=""
+									name="userId">    
+									<input type="text" class="form-control" id="studentId_update_input" value=""
+									name="studentId"	placeholder="请输入学号" readonly="readonly" pattern="/^\d{11}$/"  required   /> 
+									<input type="hidden" class="form-control" id="userId_delete_input" th:value="${session.administrator.userId}"/> 
+									<span class="help-block"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">姓名</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="name_update_input" name="name"	placeholder="请输入姓名"  pattern="^[\u2E80-\u9FFF]{2,4}"  required  oninvalid="setCustomValidity('姓名为2-4位汉字');"  oninput="setCustomValidity('');" />
+									<span class="help-block"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="lastname" class="col-sm-3 control-label">部室</label>
+								<div class="col-sm-9">
+									<select name="clubroom" class="selectpicker form-control"  >
+										<option id="clubroom_update_input"></option>
+										<option th:each="club:${allRoom}" th:text="${club.clubroomName}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-3 control-label">邮箱</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="email_update_input"
+									    name="email" placeholder="请输入邮箱"  />
+									<span class="help-block"></span>
+								</div>
+							</div>
+							<div class="form-group" id="rolevar">
+								<label  class="col-sm-3  control-label" style="padding-top:0px">身份</label>
+								<div class="col-sm-9">
+								    <input type="radio" name="role" value="admin" id="role_update_input1"/>办公室成员
+								    <input type="radio" name="role" value="tourists"  id="role_update_input2"/>学生会成员
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="" class="col-sm-3 control-label">头像</label>
+								<div class="col-sm-9">
+									<input type="file" class="file"  name="pric" onchange="updatePric()" >
+									<input type="hidden" class="file"  id="pictureFile_update_input"  name="pic"  onchange="addPric()" >
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+				<!--注脚-->
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-default btn-primary">重置</button>
+					<button type="button" id="user_update_btn" class="btn btn-default btn-primary">修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script th:src="@{http://code.jquery.com/jquery-2.0.0.min.js}" type="text/javascript"    charset="utf-8"></script>
+	<script th:src="@{/static/js/bootstrap.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/static/js/jquery.md5.js}"     type="text/javascript" ></script>
+	<script th:src="@{/static/js/fileinput.min.js}" type="text/javascript" charset="utf-8"></script>
+	<script th:src="@{/static/js/jquery.form.js}" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function() {
+		   $('#all').click(function() {
+				if (this.checked) {
+					$('.first :checkbox').prop("checked", true)
+				} else {
+					$('.first :checkbox').prop("checked", false)
+				}
+			});
+	
+		    //点击新增按钮弹出模态框。
+			$("#user_add_btn").click(function(){
+			    
+				//弹出模态框
+				$('#userAddModal').modal({
+					backdrop : 'static',
+					show:false
+				});
+			});
+			
+			
+		});
+	
+	
+		//修改用户
+		$('.edit').click(function() {
+		  
+			var userId = $(this).parent().parent().find("td").eq(1).text();
+			var id = $(this).parent().parent().find("td").eq(2).text();
+			var name = $(this).parent().parent().find("td").eq(3).text();
+			var work = $(this).parent().parent().find("td").eq(4).text();
+			var role = $(this).parent().parent().find("td").eq(5).text();
+			var phone = $(this).parent().parent().find("td").eq(6).text();
+			
+	        var t = work.trim();
+	       
+			$("#userId_update_input").val(userId);
+			$("#studentId_update_input").val(id);
+			$("#name_update_input").val(name);
+			$("#clubroom_update_input").text(t);
+			$("#clubroom_update_input").val(t);
+			
+			$("#email_update_input").val(phone);
+			
+			if(role == "办公室成员"){
+			   document.getElementById("role_update_input1").checked = true
+			}
+			
+			if(role == "学生会成员"){
+	           document.getElementById("role_update_input2").checked = true
+	        }
+	        
+	        if(role == "办公室主任"){
+              $("#rolevar").hide();
+	       }
+	       
+		});
+	
+		//校验学号是否重复
+		$("#studentId_add_input").change(function() {
+		
+			//发送ajax请求校验用户名是否可用
+			var studentId = this.value;
+			var regStudentId = /^\d{11}$/;
+			if(!regStudentId.test(studentId)){
+				show_validate_msg("#studentId_add_input", "error", "学号为11位数字");
+				return false;
+			}else{
+				show_validate_msg("#studentId_add_input", "success", "可以使用");
+			};
+			
+			$.ajax({
+				url : "checkStudentId.do",
+				data : "studentId=" + studentId,
+				type : "POST",
+				success : function(result) {
+					if (result.code == 200) {
+						show_validate_msg("#studentId_add_input", "success", "学号可用");
+						$("#user_save_btn").attr("ajax-studentId", "success");
+						
+						//密码
+					    var str=$.md5($("#studentId_add_input").val()).substring(4,12);
+						$("#password_add_input").val(str);
+					} else {
+						show_validate_msg("#studentId_add_input", "error", result.extend.studentIdMessage);
+						$("#user_save_btn").attr("ajax-studentId", "error");
+					}
+				}
+			});
+		});
+		
+		//用户名验证
+		$("#userName_add_input").change(function() {			
+			var name = this.value;
+			var reguserName = /^[\u4E00-\u9FA5]{2,4}$/;
+			if(!reguserName.test(name)){
+				//应该清空这个元素之前的样式
+				show_validate_msg("#userName_add_input", "error", "姓名为2-4位汉字");
+				return false;
+			}else{
+				show_validate_msg("#userName_add_input", "success", "姓名可用");
+			};
+		});
+		
+		
+		//邮箱验证
+		$("#email_add_input").change(function() {		
+		    //邮箱检验
+		    var email = this.value;
+			var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+			if(!regEmail.test(email)){
+				//应该清空这个元素之前的样式
+				show_validate_msg("#email_add_input", "error", "邮箱格式不正确");
+				return false;
+			}else{
+				show_validate_msg("#email_add_input", "success", "");
+			};
+			
+			//邮箱查重判断
+			$.ajax({
+				url : "checkEmail.do",
+				data : "email=" + email,
+				type : "POST",
+				success : function(result) {
+					if (result.code == 200) {
+						show_validate_msg("#email_add_input", "success", "邮箱可用");
+						$("#user_save_btn").attr("ajax-email", "success");
+					} else {
+						show_validate_msg("#email_add_input", "error", result.extend.emailMessage);
+						$("#user_save_btn").attr("ajax-email", "error");
+					}
+	
+				}
+			});	
+		});
+	
+		function addPric() {
+		   $("#addUser").ajaxSubmit({
+				url: "addPric.do",
+				type: "post",
+			    success : function(result) {
+					if (result.code == 200) {
+					   $("#pictureFile_add_input").val(result.extend.pictureFile);
+					}
+				}
+          });
+		}
+		
+		//保存用户
+		$("#user_save_btn").click(function() {
+		     
+		    var pic=$("#pictureFile_add_input").val();
+		     
+			//1、判断之前的ajax学号校验是否成功。如果成功。
+			if ($(this).attr("ajax-studentId") == "error"){
+				return false;
+			}
+			
+			//2、判断之前的ajax邮箱校验是否成功。如果成功。
+			if ($(this).attr("ajax-email") == "error"){
+				return false;
+			}
+			
+			if(pic !=''){
+				//3、发送ajax请求保存用户
+				$.ajax({
+					url : "addUser.do",
+					type : "POST",
+					data : $("#userAddModal form").serialize(),
+					success : function(result) {
+						//alert(result.msg);
+						if (result.code == 200) {
+							//用户保存成功；
+						    alert("添加用户成功");
+		                    window.location.reload();
+						}
+					}
+				});
+		  }else{
+		     alert("请选择头像");
+		  }	
+		});
+	       
+	     //用户名验证
+		$("#name_update_input").change(function() {			
+			var name = this.value;
+			var reguserName = /^[\u4E00-\u9FA5]{2,4}$/;
+			if(!reguserName.test(name)){
+				//应该清空这个元素之前的样式
+				show_validate_msg("#name_update_input", "error", "姓名为2-4位汉字");
+				return false;
+			}else{
+				show_validate_msg("#name_update_input", "success", "姓名可用");
+			};
+		});
+		
+		
+		//邮箱验证
+		$("#email_update_input").change(function() {		
+		    //邮箱检验
+		    var email = this.value;
+			var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+			
+			if(!regEmail.test(email)){
+				//应该清空这个元素之前的样式
+				show_validate_msg("#email_update_input", "error", "邮箱格式不正确");
+				return false;
+			}else{
+				show_validate_msg("#email_update_input", "success", "");
+			};
+			
+			//邮箱查重判断
+			$.ajax({
+				url : "checkEmail.do",
+				data : "email=" + email,
+				type : "POST",
+				success : function(result) {
+					if (result.code == 200) {
+						show_validate_msg("#email_update_input", "success", "邮箱可用");
+						$("#user_save_btn").attr("ajax-email2", "success");
+					} else {
+						show_validate_msg("#email_update_input", "error", result.extend.emailMessage);
+						$("#user_save_btn").attr("ajax-email2", "error");
+					}
+	
+				}
+			});	
+		});
+	    
+		function updatePric() {
+		   $("#updateUser").ajaxSubmit({
+				url: "addPric.do",
+				type: "post",
+			    success : function(result) {
+					if (result.code == 200) {
+					   $("#pictureFile_update_input").val(result.extend.pictureFile);
+					}
+				}
+          });
+		}
+	     
+	     
+	      //点击更新，更新用户信息
+		$("#user_update_btn").click(function(){
+		    
+		    //1、判断之前的ajax邮箱校验是否成功。如果成功。
+			if ($(this).attr("ajax-email2") == "error"){
+				return false;
+			}
+			
+			var email =$("#email_update_input").val();
+			var pic=$("#pictureFile_update_input").val();
+			
+			if(email != '' && pic != ''){
+			   //2.发送ajax请求保存更新的数据
+				 $.ajax({
+					url : "updateUser.do",
+					type : "PUT",
+					data : $("#userUpdateModal form").serialize(),
+					success : function(result) {
+	           		    if (result.code == 200) {
+	           		       alert("修改用户成功");
+						   //部室保存成功；关闭模态框
+		                   window.location.reload();
+						} 
+					}
+				});
+			}else{
+			  if(email == ''){
+			     alert("邮箱不能为空");
+			  }else if(pic == ''){
+			     alert("头像都不能为空");
+			  }else{
+			     alert("服务器发生错误，修改用户失败，请稍后再试");
+			  }
+			}
+			
+		});
+		  
+		//显示校验结果的提示信息
+		function show_validate_msg(ele, status, msg) {
+			//清除当前元素的校验状态
+			$(ele).parent().removeClass("has-success has-error");
+			$(ele).next("span").text("");
+			
+			if ("success" == status) {
+				$(ele).parent().addClass("has-success");
+				$(ele).next("span").text(msg);
+			} else if ("error" == status) {
+				$(ele).parent().addClass("has-error");
+				$(ele).next("span").text(msg);
+			}
+		}
+	  
+	
+		 //单个删除
+	     $(document).on("click",".delete",function(){
+			//1、弹出是否确认删除对话框
+			 var Name = $(this).parents("tr").find("td:eq(3)").text();
+			 var Id = $(this).parents("tr").find("td:eq(1)").text();
+			 
+			 var adminId=$("#userId_delete_input").val();
+			
+			 if(adminId == Id){
+			    alert("不能删除自己！！！");
+			 }else{
+			   if(confirm("确认删除【"+Name+"】吗？")){
+				$.ajax({
+					url:"deleteUser.do",
+					type:'POST',
+					data:{ids:Id},
+					contentType:'application/x-www-form-urlencoded', //contentType很重要
+					success:function(){
+						alert("删除成功");
+						window.location.reload();
+					}
+				}); 
+			  }  
+			}
+		});
+			
+		//点击全部删除，就批量删除
+		$(document).on("click","#cancel",function(){
+			var Names = "";
+			var del_idstr = "";
+			
+			$.each($(".first :checked"),function(){
+			       //this
+				 Names += $(this).parents("tr").find("td:eq(3)").text()+",";
+				 //组装id字符串
+				 del_idstr += $(this).parents("tr").find("td:eq(1)").text()+"-"; 
+			});
+
+			//去除ClubroomNames多余的,
+			Names = Names.substring(0, Names.length-1);
+			//去除删除的id多余的-
+			del_idstr = del_idstr.substring(0, del_idstr.length-1);
+			var adminId=$("#userId_delete_input").val();
+			if(confirm("确认删除【"+Names+"】吗？")){
+					//发送ajax请求删除
+					$.ajax({
+						url:'deleteUser.do',
+						type:"POST",
+				        data:{"ids":del_idstr,"adminId":adminId},
+						success:function(){
+							alert("删除成功！！！");
+							window.location.reload();
+						}
+					});
+			  } 
+		});
+		
+		
+	</script>
+</body>
+</html>

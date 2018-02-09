@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-        <!-- 扫描@Controler  @Service   -->
+        <!-- 扫描     @Controler  @Service   -->
         <context:component-scan base-package="org.future.ims"/>
         
         <!-- 注解驱动 -->
-        <mvc:annotation-driven conversion-service="conversionServiceFactoryBean"/>
+        <mvc:annotation-driven conversion-service="conversionServiceFactoryBean">
+           <mvc:message-converters register-defaults="true">
+               <!-- 将StringHttpMessageConverter的默认编码设置为UTF-8 -->
+               <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                      <constructor-arg  value="UTF-8"/>
+               </bean>
+               <!-- Jackson2HttpMessageConverter的默认格式输出为设置为true -->
+               <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                   <property name="prettyPrint" value="true"/>
+                   <property name="prefixJson" value="false"/>
+                   <property name="supportedMediaTypes">
+                      <list>
+                         <value>application/json</value>
+                         <value>text/json</value>                         
+                      </list>
+                   
+                   </property>
+               </bean> 
+           
+           
+           </mvc:message-converters>
+        
+        
+        
+        </mvc:annotation-driven>
         
         <!-- 配置Conveter转换器  转换工厂 （日期、去掉前后空格）。。 -->
         <bean id="conversionServiceFactoryBean" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
@@ -22,6 +49,11 @@
         		</list>
         	</property>
         </bean>
+        
+     
+        
+        
+        
         
         <!-- 上传图片配置实现类 -->
         <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -34,18 +66,18 @@
         <!--  <bean class="org.future.ims.utils.CustomExceptionResolver"/> -->
 
 		<!-- SPringmvc的拦截器 -->
-		<mvc:interceptors>
-			<!-- 多个拦截器 -->
+		<!-- <mvc:interceptors>
+			多个拦截器
 			<mvc:interceptor>
 				<mvc:mapping path="/**"/>
-				<!-- 自定义的拦截器类 -->
+				自定义的拦截器类
 				<bean class="org.future.ims.utils.UserInterceptor"/>
 			</mvc:interceptor>
 			
-	 	</mvc:interceptors>
+	 	</mvc:interceptors> -->
         
        <!--  视图解释器       SpringMVC + thymeleaf 配置-->
-       <bean id="templateResolver"  class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+       <bean id="templateResolver"  class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
          <property name="prefix" value="/WEB-INF/pages/" />
          <property name="suffix" value=".html" />
          <property name="templateMode" value="HTML5" />

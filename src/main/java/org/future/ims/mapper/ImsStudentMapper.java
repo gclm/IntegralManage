@@ -10,7 +10,7 @@ public interface ImsStudentMapper {
 
     int deleteByExample(ImsStudentExample example);
 
-    int deleteByPrimaryKey(Integer studentId);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(ImsStudent record);
 
@@ -18,7 +18,11 @@ public interface ImsStudentMapper {
 
     List<ImsStudent> selectByExample(ImsStudentExample example);
 
-    ImsStudent selectByPrimaryKey(Integer studentId);
+    ImsStudent selectByPrimaryKey(Integer id);
+    
+    ImsStudent getStudentByStudentId(String studentId);
+    
+    List<ImsStudent> searchByReplace(String replace);
 
     int updateByExampleSelective(@Param("record") ImsStudent record, @Param("example") ImsStudentExample example);
 

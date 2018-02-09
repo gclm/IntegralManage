@@ -1,50 +1,61 @@
-*{
+* {
 	padding: 0;
 	margin: 0;
 }
-html,body{
+
+html, body {
 	background-color: #d8dcdf;
 	font-size: 18px;
 }
-.r-top{
+
+.r-top {
 	height: 160px;
 	margin-bottom: 20px;
 	overflow: hidden;
 }
-.titile{
+
+.titile {
 	height: 130px;
 	padding: 20px;
 }
 
-.img{
-	float:left;
+.img {
+	float: left;
 }
-.img i{
+
+.img i {
 	font-size: 100px;
 }
-.detail-info{
+
+.detail-info {
 	float: left;
 	margin-left: 50px;
 }
-.p1{
+
+.p1 {
 	font-family: "楷体";
 	font-size: 44px;
 }
-.p2{
+
+.p2 {
 	font-size: 30px;
 	color: #545557;
+	letter-spacing: 5px;
 }
-.input-group{
+
+.input-group {
 	width: 320px;
 	position: relative;
-	left:60%;
+	left: 60%;
 	transform: translateX(-50%);
 }
-.e-input{
+
+.e-input {
 	float: left;
 	margin-right: 80px;
 }
-.e-input input{
+
+.e-input input , .choice{
 	background-color: #EFF3F4;
 	border: 0;
 	width: 240px;
@@ -52,67 +63,140 @@ html,body{
 	text-indent: 8px;
 	margin-top: 10px;
 }
-.last{
+
+.last {
 	margin-right: 80px;
 }
-.search{
+
+.search {
 	float: right;
 	margin-right: 50px;
 	margin-top: -20px;
 	font-size: 24px;
 }
-.search a{
+
+.search button{
 	color: #8A8F95;
+	cursor:pointer;
+	background-color:##d8dcdf;
+	border:0px; 
 }
-.r-main{
+
+.r-main {
 	background-color: white;
-	color:#8a8f95;
+	color: #8a8f95;
 	padding: 15px;
+	min-height: 680px;
 	overflow: auto;
 }
-.option{
+
+.option {
+	display:inline-block;
 	margin-top: 10px;
-}
-.o-left{
+	margin-bottom:15px;
+} 
+
+.o-left {
 	padding: 5px;
 }
-.o-left span{
+
+.o-left span {
 	position: relative;
 }
-.o-right{
+
+.o-right {
 	position: absolute;
 	right: 10px;
 }
-.o-right a{
+
+.o-right a {
 	text-decoration: none;
 	font-size: 18px;
 }
-.o-right a i{
+
+.o-right a i {
 	font-size: 20px;
 }
-.o-right span{
-	color:#8A8F95;
+
+.o-right span {
+	color: #8A8F95;
 }
-.table{
+
+.table {
 	text-align: center;
 	font-size: 14px;
 }
 
+.first input {
+	position: relative;
+	top: 1px;
+}
 
+.modal-backdrop {
+	z-index: 50px;
+}
+
+.page {
+	min-width: 405px;
+	text-align: center;
+}
+
+.allpage {
+	display: inline-block;
+}
+
+.allpage li {
+	display: inline;
+}
+
+.allpage li a {
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	color: #337ab7;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+.allpage li a:hover, .allpage li a:focus {
+	color: #23527c;
+	background-color: #eee;
+	border-color: #ddd;
+}
+
+.allpage  .active>a, .allpage  .active>a:hover, .allpage  .active>a:focus
+	{
+	z-index: 2;
+	color: #fff;
+	cursor: default;
+	background-color: #337ab7;
+	border-color: #337ab7;
+}
+.mybtn{
+	text-align: center;
+	margin-top: 20px;
+}
+.mybtn span{
+	display: inline-block;
+	width: 240px;
+}
 /* 小屏幕（平板，大于等于768px） */
-@media (min-width: 768px) {
-	.input-group{
+@media ( min-width : 768px) {
+	.input-group {
 		width: 70%;
 		position: relative;
-		top:8%;
-		left:50%;
+		top: 8%;
+		left: 50%;
 		transform: translateX(-50%);
 	}
-	.e-input{
+	.e-input {
 		float: left;
 		margin-right: 85px;
 	}
-	.e-input input{
+	.e-input input ,.choice{
 		background-color: #EFF3F4;
 		border: 0;
 		width: 180px;
@@ -121,71 +205,70 @@ html,body{
 		text-indent: 8px;
 		margin-top: 20px;
 	}
-	.last{
+	.last {
 		margin-right: 50px;
 	}
-	.search{
+	.search {
 		float: right;
 		margin-right: 10px;
 		font-size: 28px;
 		margin-top: 0px;
 	}
-	.o-right{
+	.o-right {
 		position: absolute;
 		right: 50px;
 	}
-	.table-responsive{
+	.table-responsive {
 		min-width: 900px;
 	}
-	 
 }
-@media (min-width: 990px) {
-	.input-group{
+
+@media ( min-width : 990px) {
+	.input-group {
 		width: 100%;
-		position:static;
-		top:0;
+		position: static;
+		top: 0;
 		left: 0;
 		transform: rotateX(0);
 	}
-	.e-input{
+	.e-input {
 		float: left;
 		margin-right: 70px;
-}
-	.last{
+	}
+	.last {
 		margin-right: 20px;
-		}
-	.e-input input{
+	}
+	.e-input input ,.choice{
 		background-color: #EFF3F4;
 		border: 0;
 		width: 170px;
 		height: auto;
 		border-radius: 2px;
 		text-indent: 8px;
-		margin-top: 0;
+		margin-top: -3px;
 	}
-	.search{
+	.search {
 		float: right;
-		margin-right: 60px;	
+		margin-right: 60px;
 		font-size: 18px;
 	}
-	.table{
+	.table {
 		text-align: center;
 		font-size: 16px;
+	}
 }
-	
-}
-@media (min-width: 1200px) {
-	.e-input{
+
+@media ( min-width : 1200px) {
+	.e-input {
 		margin-right: 80px;
-}
-	.last{
+	}
+	.last {
 		margin-right: 20px;
-		}
-	.e-input input{
+	}
+	.e-input input {
 		width: 200px;
 	}
-	.search{
-		margin-right: 80px;	
+	.search {
+		margin-right: 80px;
 	}
 }
- 

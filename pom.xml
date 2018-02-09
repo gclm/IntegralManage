@@ -45,12 +45,20 @@
 	</dependency>
     <!-- test end -->
     
-    <!-- json  start-->
+   <!-- json  start-->
 	<dependency>
 	    <groupId>com.fasterxml.jackson.core</groupId>
 	    <artifactId>jackson-core</artifactId>
-	    <version>2.9.0</version>
+	    <version>2.8.8</version>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.8.8</version>
+	</dependency>
+		
 	<dependency>
 	    <groupId>com.jayway.jsonpath</groupId>
 	    <artifactId>json-path</artifactId>
@@ -265,6 +273,47 @@
 		<version>5.0.0</version>
 	</dependency>
    
+   <!-- java邮件 -->
+    <dependency>
+		<groupId>com.sun.mail</groupId>
+		<artifactId>javax.mail</artifactId>
+		<version>1.6.0</version>
+	</dependency>
+   
+   <!-- ********************** 解析execl ********************** -->
+		<!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
+		<dependency>
+		    <groupId>org.apache.xmlbeans</groupId>
+		    <artifactId>xmlbeans</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml-schemas</artifactId>
+		    <version>3.8</version>
+		</dependency>
+		<dependency>
+       <groupId>com.github.stuxuhai</groupId>
+       <artifactId>jpinyin</artifactId>
+       <version>1.1.8</version>
+    </dependency> 
+   
+  
+   
+   
    
   </dependencies>
  
@@ -296,7 +345,19 @@
       </plugin>
       
     </plugins>
-  
+   
+    <resources>  
+        <resource>  
+            <directory>src/main/java</directory>  
+            <includes>  
+                <include>**/*.xml</include>  
+            </includes>  
+        </resource>  
+        <resource>  
+            <directory>src/main/resources</directory>  
+        </resource>  
+    </resources> 
+
    
   </build>
 </project>

@@ -28,15 +28,15 @@ public class UserInterceptor implements HandlerInterceptor{
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object arg2) throws Exception {
 
-		String requestURI = request.getRequestURI();
+		/*String requestURI = request.getRequestURI();
 		
 		if(!requestURI.contains("/login")) {
 			ImsUser user = (ImsUser) request.getSession().getAttribute("User");
 			if(user==null){
-				response.sendRedirect(request.getContextPath()+"/login.do");
+				response.sendRedirect(request.getContextPath()+"/base/login.do");
 				return false;
 			}     			
-		}
+		}*/
 		
 	    return  true;
    }

@@ -63,6 +63,13 @@ public class ImsClubroomExample {
         distinct = false;
     }
 
+    /**
+     * null
+     * 
+     * @author wcyong
+     * 
+     * @date 2017-11-03
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -242,6 +249,13 @@ public class ImsClubroomExample {
         }
     }
 
+    /**
+     * null
+     * 
+     * @author wcyong
+     * 
+     * @date 2017-11-03
+     */
     public static class Criterion {
         private String condition;
 

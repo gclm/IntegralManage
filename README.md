@@ -1,10 +1,2 @@
-# IntegralManage
-信工院积分管理系统
-
-### 使用技术
-框架：ssm（springmvc mybatis spring）
-
-数据库： postgresql
-
-前端：thymeleaf
-
+本系统为信息工程学院积分管理系统
+本系统采用SSM框架，使用postgresql数据库，ajax提交，模态框，poi批量导入导出

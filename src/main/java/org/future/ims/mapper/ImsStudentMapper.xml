@@ -1,196 +1,223 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.future.ims.mapper.ImsStudentMapper" >
-  <resultMap id="BaseResultMap" type="org.future.ims.pojo.ImsStudent" >
-    <id column="student_id" property="studentId" jdbcType="INTEGER" />
-    <result column="class" property="class" jdbcType="VARCHAR" />
-    <result column="name" property="name" jdbcType="OTHER" />
-    <result column="id" property="id" jdbcType="INTEGER" />
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+
+    <resultMap id="BaseResultMap" type="org.future.ims.pojo.ImsStudent" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="grades" property="grades" jdbcType="VARCHAR" />
+        <result column="student_id" property="studentId" jdbcType="VARCHAR" />
+    </resultMap>
+
+	<!-- 通过学号查询学生信息，返回一个对象 -->
+	<select id="getStudentByStudentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from ims_student where student_id=#{studentId}
+	</select>
+	
+	<!-- 通过学号、班级、姓名返回学生对象的list集合 -->
+	<select id="searchByReplace" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from ims_student where name LIKE CONCAT('%',#{replace},'%') or grades LIKE CONCAT('%',#{replace},'%')
+		or student_id LIKE CONCAT('%',#{replace},'%')
+	</select>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List" >
+        id, name, grades, student_id
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="org.future.ims.pojo.ImsStudentExample" >
+        select
+        <if test="distinct" >
+            distinct
         </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
-    student_id, class, name, id
-  </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="org.future.ims.pojo.ImsStudentExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from ims_student
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from ims_student
-    where student_id = #{studentId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from ims_student
-    where student_id = #{studentId,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="org.future.ims.pojo.ImsStudentExample" >
-    delete from ims_student
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="org.future.ims.pojo.ImsStudent" >
-    insert into ims_student (student_id, class, name, 
-      id)
-    values (#{studentId,jdbcType=INTEGER}, #{class,jdbcType=VARCHAR}, #{name,jdbcType=OTHER}, 
-      #{id,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="org.future.ims.pojo.ImsStudent" >
-    insert into ims_student
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="studentId != null" >
-        student_id,
-      </if>
-      <if test="class != null" >
-        class,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="id != null" >
-        id,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="studentId != null" >
-        #{studentId,jdbcType=INTEGER},
-      </if>
-      <if test="class != null" >
-        #{class,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=OTHER},
-      </if>
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="org.future.ims.pojo.ImsStudentExample" resultType="java.lang.Integer" >
-    select count(*) from ims_student
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update ims_student
-    <set >
-      <if test="record.studentId != null" >
-        student_id = #{record.studentId,jdbcType=INTEGER},
-      </if>
-      <if test="record.class != null" >
-        class = #{record.class,jdbcType=VARCHAR},
-      </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=OTHER},
-      </if>
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update ims_student
-    set student_id = #{record.studentId,jdbcType=INTEGER},
-      class = #{record.class,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=OTHER},
-      id = #{record.id,jdbcType=INTEGER}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.future.ims.pojo.ImsStudent" >
-    update ims_student
-    <set >
-      <if test="class != null" >
-        class = #{class,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=OTHER},
-      </if>
-      <if test="id != null" >
-        id = #{id,jdbcType=INTEGER},
-      </if>
-    </set>
-    where student_id = #{studentId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="org.future.ims.pojo.ImsStudent" >
-    update ims_student
-    set class = #{class,jdbcType=VARCHAR},
-      name = #{name,jdbcType=OTHER},
-      id = #{id,jdbcType=INTEGER}
-    where student_id = #{studentId,jdbcType=INTEGER}
-  </update>
+        <include refid="Base_Column_List" />
+        from ims_student
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from ims_student
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from ims_student
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="org.future.ims.pojo.ImsStudentExample" >
+        delete from ims_student
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+	<!--id不写，否则报违反了非空约束，id已经实现自增，不必写入  -->
+    <insert id="insert" parameterType="org.future.ims.pojo.ImsStudent" >
+        insert into ims_student (name, grades, 
+            student_id)
+        values (#{name,jdbcType=VARCHAR}, #{grades,jdbcType=VARCHAR}, 
+            #{studentId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="org.future.ims.pojo.ImsStudent" >
+        insert into ims_student
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="grades != null" >
+                grades,
+            </if>
+            <if test="studentId != null" >
+                student_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="grades != null" >
+                #{grades,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null" >
+                #{studentId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="org.future.ims.pojo.ImsStudentExample" resultType="java.lang.Integer" >
+        select count(*) from ims_student
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
+        update ims_student
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null" >
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.grades != null" >
+                grades = #{record.grades,jdbcType=VARCHAR},
+            </if>
+            <if test="record.studentId != null" >
+                student_id = #{record.studentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update ims_student
+        set id = #{record.id,jdbcType=INTEGER},
+            name = #{record.name,jdbcType=VARCHAR},
+            grades = #{record.grades,jdbcType=VARCHAR},
+            student_id = #{record.studentId,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.future.ims.pojo.ImsStudent" >
+        update ims_student
+        <set >
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="grades != null" >
+                grades = #{grades,jdbcType=VARCHAR},
+            </if>
+            <if test="studentId != null" >
+                student_id = #{studentId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.future.ims.pojo.ImsStudent" >
+        update ims_student
+        set name = #{name,jdbcType=VARCHAR},
+            grades = #{grades,jdbcType=VARCHAR},
+            student_id = #{studentId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

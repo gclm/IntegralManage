@@ -1,36 +1,36 @@
 package org.future.ims.pojo;
 
 /**
- * @ClassName:     ImsUser.java
- *  
- * @author         孤城落寞
- *
- * @Date           2017年10月25日 上午8:27:19
- *
- * @Description:   TODO(用一句话描述该文件做什么)  
+ * null
+ * 
+ * @author 
+ * 
+ * @date 2017-11-03
  */
 public class ImsUser {
-	
-    private Integer user_id;
-    
-    //姓名
+    private Integer userId;
+
     private String name;
 
-    private String student_id;
+    private String studentId;
 
     private String password;
-    //部室
+
     private String clubroom;
 
     private String role;
-    
-    private String phone;
-    
-    //头像
+
+    private String email;
+
     private String pic;
-    
-    //状态
-    private String status;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;
@@ -40,23 +40,15 @@ public class ImsUser {
         this.name = name == null ? null : name.trim();
     }
 
-    public Integer getUser_id() {
-		return user_id;
-	}
+    public String getStudentId() {
+        return studentId;
+    }
 
-	public void setUser_id(Integer user_id) {
-		this.user_id = user_id;
-	}
+    public void setStudentId(String studentId) {
+        this.studentId = studentId == null ? null : studentId.trim();
+    }
 
-	public String getStudent_id() {
-		return student_id;
-	}
-
-	public void setStudent_id(String student_id) {
-		this.student_id = student_id == null ? null : student_id.trim();
-	}
-
-	public String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -80,12 +72,12 @@ public class ImsUser {
         this.role = role == null ? null : role.trim();
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
     }
 
     public String getPic() {
@@ -96,11 +88,14 @@ public class ImsUser {
         this.pic = pic == null ? null : pic.trim();
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ImsUser [userId=" + userId + ", name=" + name + ", studentId=" + studentId + ", password=" + password
+				+ ", clubroom=" + clubroom + ", role=" + role + ", email=" + email + ", pic=" + pic + "]";
+	}
+    
+    
 }

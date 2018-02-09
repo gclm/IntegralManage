@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>查询结果</title>
+		<link rel="stylesheet" type="text/css"
+			th:href="@{/static/css/query.css}" />	
+	</head><!--积分查询跳转界面-->
+	<body>
+		<c th:if="${no != 1}">
+			<div class="header">
+			<p th:text="${name}"></p>
+			<p th:text="${studentId}"></p>
+			<p th:text="${intSemester}"></p>
+			</div>
+			<div class="center">
+				<ul>
+					<li><span class="left"><span>总分</span></span><span class="right" th:text="${score}"></span></li>
+					<li><span class="left">班级排名</span><span class="right" th:text="${sort}"></span></li>
+				</ul>
+			</div>
+			<div class="mybtn">
+					<a th:href="@{/sort/sortList.do?(studentId=${studentId},intSemester=${intSemester},i=1)}" target="right"><button class="btn">个人情况</button></a>
+					<span></span>
+					<a th:href="@{/sort/sortList.do?(studentId=${studentId},intSemester=${intSemester},i=2)}" target="right"><button class="btn">班级情况</button></a>
+			</div>
+		</c>
+		<c th:if="${no == 1}">
+			<div class="header">
+			<p th:text="${name}"></p>
+			<p th:text="${studentId}"></p>
+			<p th:text="${intSemester}"></p>
+			</div>
+			<div class="result">
+				这学期你没有积分被录入，去查查其他学期吧！
+			</div>
+		</c>
+	</body>
+</html>

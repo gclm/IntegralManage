@@ -6,7 +6,6 @@ html,body{
 	height: 100%;
 	width:100%;
 	background-color: #d8dcdf;
-	overflow: hidden;/*防止高度塌陷*/
 }
 .header{
 	color: #FFFFFF;
@@ -68,17 +67,47 @@ html,body{
 	margin-left: 15px;
 }
 .info{
-	width:80px;
-	height: 60px;
-	padding: 5px;
+	width:100px;
 	position: absolute;
-	margin-left: 28px;
-	background-color: #0096E6 ;
+	margin-left: 10px;
+	background: #97A1AA;
 	display: none;
+	z-index: 9;
 }
+.info:before{
+	border-bottom: 10px solid #1D2939;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	content: " ";
+	height: 0px;
+	width: 0px;
+	display: inline-block;
+	position: absolute;
+	top:-8px;
+	left:40px;
+}
+.info ul{
+	min-width: 120px;
+	display: none;
+	background: #1d2939;
+	
+}
+.info ul li{
+	
+	list-style: none;
+	margin-left: 5px;
+	height: 40px;
+}
+.info li a{
+	color: white;
+	
+}
+input[readonly],.form-control[readonly]{background-color: white;color:grey}
+
 .main{
 	clear: both;
 	padding-left:250px;
+	overflow: hidden;
 }
 .left{
 	float: left;
@@ -90,8 +119,8 @@ html,body{
 	float: right;
 	width:100%;
 	min-width: 200px;
-	height:1180px;
-	padding: 20px 30px 30px 5px;
+	min-height:900px;
+	padding: 20px 30px 0px 5px;
 	
 }
 .l-header{
@@ -129,7 +158,7 @@ html,body{
 	width:80%;
 	margin: 20px auto;
 	background-color: white;
-	height:960px;
+	height:680px;
 	display: block;
 }
 .list-body a{

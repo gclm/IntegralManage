@@ -35,5 +35,18 @@ public class DateConveter implements Converter<String, Date>{
 		return null;
 	}
 
+	public static String convert(Date rtn) {
+		try {
+			if(null != rtn){
+				DateFormat df = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+				return df.format(rtn);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return null;
+	}
+
 }
 
